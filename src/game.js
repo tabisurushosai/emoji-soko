@@ -37,5 +37,9 @@ function gameLoop() {
 
 window.addEventListener('load', async () => {
   await init();
+  registerInput((dir) => {
+    /* 010 で実装する移動 */
+    console.log(dir);
+  });
   gameLoop();
 });
