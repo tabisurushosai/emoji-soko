@@ -27,6 +27,7 @@ function applyStageToState(stage) {
   state.player = { x: 0, y: 0 };
   state.history = [];
   state.cleared = false;
+  state.clearEffect = null;
 
   for (const row of state.stage) {
     for (const cell of row) {
@@ -97,7 +98,7 @@ async function goToNextStage() {
 }
 
 function onStageClear() {
-  state.cleared = true;
+  beginStageClear(state);
   if (!state.progress.cleared.includes(state.currentStage)) {
     state.progress.cleared.push(state.currentStage);
   }
@@ -152,14 +153,8 @@ function render() {
     renderStage(ctx, state.stage);
   }
 
-  if (state.cleared) {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 48px system-ui, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('STAGE CLEAR!', canvas.width / 2, canvas.height / 2);
+  if (state.clearEffect) {
+    drawClearEffect(ctx, state.clearEffect);
   }
 }
 
@@ -185,7 +180,7 @@ window.addEventListener('load', async () => {
   });
   registerInput(
     (dir) => {
-      if (state.screen !== 'game' || state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
       if (tryMove(state, dir)) {
         if (checkClear(state)) {
           onStageClear();
@@ -194,13 +189,13 @@ window.addEventListener('load', async () => {
       }
     },
     () => {
-      if (state.screen !== 'game' || state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
       if (undo(state)) {
         render();
       }
     },
     () => {
-      if (state.screen !== 'game' || state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
       resetStage();
     },
     () => {

@@ -38,6 +38,58 @@ function drawEmoji(ctx, emoji, x, y, size = 40) {
   ctx.fillText(emoji, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
 }
 
+function createClearParticles(canvas, count) {
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+  return Array.from({ length: count }, () => ({
+    x: cx + (Math.random() - 0.5) * 320,
+    y: cy + (Math.random() - 0.5) * 200,
+    vx: (Math.random() - 0.5) * 1.2,
+    vy: -0.5 - Math.random() * 1.5,
+    size: 16 + Math.random() * 20,
+    phase: Math.random() * Math.PI * 2,
+  }));
+}
+
+function drawClearEffect(ctx, clearEffect) {
+  const canvas = ctx.canvas;
+  const progress = getClearEffectProgress(clearEffect);
+  const fade = progress * progress;
+
+  if (!clearEffect.particles) {
+    clearEffect.particles = createClearParticles(canvas, 28);
+  }
+
+  ctx.fillStyle = `rgba(0, 0, 0, ${0.55 * fade})`;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const elapsed = performance.now() - clearEffect.startTime;
+  for (const p of clearEffect.particles) {
+    const x = p.x + p.vx * elapsed * 0.06;
+    const y = p.y + p.vy * elapsed * 0.06 + Math.sin(elapsed * 0.004 + p.phase) * 8;
+    const alpha = fade * (0.5 + 0.5 * Math.sin(elapsed * 0.008 + p.phase));
+
+    ctx.globalAlpha = Math.max(0, alpha);
+    ctx.font = `${p.size}px "Apple Color Emoji", "Segoe UI Emoji"`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('⭐', x, y);
+  }
+
+  ctx.globalAlpha = fade;
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 52px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('STAGE CLEAR', canvas.width / 2, canvas.height / 2);
+
+  ctx.globalAlpha = fade * 0.85;
+  ctx.font = '22px system-ui, sans-serif';
+  ctx.fillText('🎉', canvas.width / 2, canvas.height / 2 + 52);
+
+  ctx.globalAlpha = 1;
+}
+
 function renderStage(ctx, stage) {
   const rows = stage.length;
   const cols = stage[0]?.length ?? 0;

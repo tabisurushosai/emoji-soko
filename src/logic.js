@@ -26,6 +26,7 @@ function createStateSnapshot(state) {
     stage: state.stage.map((row) => row.map((cell) => ({ ...cell }))),
     player: { ...state.player },
     cleared: state.cleared,
+    clearEffect: null,
   };
 }
 
@@ -37,6 +38,7 @@ function undo(state) {
   state.stage = restored.stage;
   state.player = restored.player;
   state.cleared = restored.cleared;
+  state.clearEffect = restored.clearEffect ?? null;
   return true;
 }
 
@@ -98,4 +100,22 @@ function checkClear(state) {
   }
 
   return looseBoxes === 0 && boxesOnGoal > 0;
+}
+
+const CLEAR_EFFECT_DURATION = 1500;
+
+function beginStageClear(state) {
+  state.cleared = true;
+  state.clearEffect = {
+    startTime: performance.now(),
+    particles: null,
+  };
+}
+
+function getClearEffectProgress(clearEffect) {
+  if (!clearEffect) return 0;
+  return Math.min(
+    (performance.now() - clearEffect.startTime) / CLEAR_EFFECT_DURATION,
+    1
+  );
 }
