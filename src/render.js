@@ -1,4 +1,38 @@
 const CELL_SIZE = 48;
+const PLAYER_ANIM_DURATION = 150;
+
+function easeOutQuad(t) {
+  return 1 - (1 - t) * (1 - t);
+}
+
+function isPlayerCell(type) {
+  return type === 'PLAYER' || type === 'PLAYER_ON_GOAL';
+}
+
+function createPlayerAnim(fromX, fromY, toX, toY) {
+  return {
+    fromX,
+    fromY,
+    toX,
+    toY,
+    startTime: performance.now(),
+    duration: PLAYER_ANIM_DURATION,
+  };
+}
+
+function isPlayerAnimating(playerAnim) {
+  if (!playerAnim) return false;
+  return performance.now() - playerAnim.startTime < playerAnim.duration;
+}
+
+function getPlayerAnimGridPos(playerAnim) {
+  const elapsed = performance.now() - playerAnim.startTime;
+  const t = easeOutQuad(Math.min(elapsed / playerAnim.duration, 1));
+  return {
+    x: playerAnim.fromX + (playerAnim.toX - playerAnim.fromX) * t,
+    y: playerAnim.fromY + (playerAnim.toY - playerAnim.fromY) * t,
+  };
+}
 
 function getStageOrigin(canvas, cols, rows) {
   const stageW = cols * CELL_SIZE;
@@ -115,7 +149,7 @@ function drawMoveHud(ctx, stageNum, moves, bestMoves) {
   ctx.fillText(label, canvas.width - 16, 12);
 }
 
-function renderStage(ctx, stage) {
+function renderStage(ctx, stage, player, playerAnim) {
   const rows = stage.length;
   const cols = stage[0]?.length ?? 0;
   const { originX, originY } = getStageOrigin(ctx.canvas, cols, rows);
@@ -124,15 +158,37 @@ function renderStage(ctx, stage) {
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const emoji = EMOJI_MAP[stage[y][x].type];
-      if (emoji) {
-        drawEmoji(
-          ctx,
-          emoji,
-          originX + x * CELL_SIZE,
-          originY + y * CELL_SIZE
-        );
+      const cell = stage[y][x];
+      if (
+        player &&
+        x === player.x &&
+        y === player.y &&
+        isPlayerCell(cell.type)
+      ) {
+        continue;
       }
+
+      const emoji = EMOJI_MAP[cell.type];
+      if (emoji) {
+        drawEmoji(ctx, emoji, originX + x * CELL_SIZE, originY + y * CELL_SIZE);
+      }
+    }
+  }
+
+  if (player) {
+    const cell = stage[player.y][player.x];
+    const emoji = EMOJI_MAP[cell.type];
+    if (emoji) {
+      let drawX = originX + player.x * CELL_SIZE;
+      let drawY = originY + player.y * CELL_SIZE;
+
+      if (playerAnim && isPlayerAnimating(playerAnim)) {
+        const pos = getPlayerAnimGridPos(playerAnim);
+        drawX = originX + pos.x * CELL_SIZE;
+        drawY = originY + pos.y * CELL_SIZE;
+      }
+
+      drawEmoji(ctx, emoji, drawX, drawY);
     }
   }
 }

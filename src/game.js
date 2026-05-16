@@ -14,6 +14,7 @@ const state = {
   settings: null,
   settingsMenuIndex: 0,
   moves: 0,
+  playerAnim: null,
 };
 
 let transitionTimer = null;
@@ -32,6 +33,7 @@ function applyStageToState(stage) {
   state.cleared = false;
   state.clearEffect = null;
   state.moves = 0;
+  state.playerAnim = null;
 
   for (const row of state.stage) {
     for (const cell of row) {
@@ -203,7 +205,10 @@ function render() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   if (state.stage) {
-    renderStage(ctx, state.stage);
+    if (state.playerAnim && !isPlayerAnimating(state.playerAnim)) {
+      state.playerAnim = null;
+    }
+    renderStage(ctx, state.stage, state.player, state.playerAnim);
     drawMoveHud(ctx, state.currentStage, state.moves, state.progress.bestMoves);
   }
 
@@ -259,17 +264,28 @@ window.addEventListener('load', async () => {
   registerInput(
     (dir) => {
       if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
+      if (isPlayerAnimating(state.playerAnim)) return;
+
+      const fromX = state.player.x;
+      const fromY = state.player.y;
       if (tryMove(state, dir)) {
+        state.playerAnim = createPlayerAnim(
+          fromX,
+          fromY,
+          state.player.x,
+          state.player.y
+        );
         state.moves++;
         if (checkClear(state)) {
           onStageClear();
         }
-        render();
       }
     },
     () => {
       if (state.screen !== 'game' || state.showStageSelect || state.cleared) return false;
+      if (isPlayerAnimating(state.playerAnim)) return false;
       if (undo(state)) {
+        state.playerAnim = null;
         render();
         return true;
       }
@@ -277,10 +293,12 @@ window.addEventListener('load', async () => {
     },
     () => {
       if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
+      if (isPlayerAnimating(state.playerAnim)) return;
       resetStage();
     },
     () => {
       if (state.screen !== 'game') return;
+      if (isPlayerAnimating(state.playerAnim)) return;
       toggleStageSelect();
     }
   );
