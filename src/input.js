@@ -13,11 +13,17 @@ const keyMap = {
   L: 'right',
 };
 
-function registerInput(onMove, onUndo) {
+function registerInput(onMove, onUndo, onReset) {
   window.addEventListener('keydown', (event) => {
     if (event.key === 'z' || event.key === 'Z') {
       event.preventDefault();
       onUndo();
+      return;
+    }
+
+    if (event.key === 'r' || event.key === 'R') {
+      event.preventDefault();
+      onReset();
       return;
     }
 

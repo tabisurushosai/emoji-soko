@@ -6,10 +6,11 @@ const state = {
   player: { x: 0, y: 0 },
   history: [],
   cleared: false,
+  currentStage: 1,
 };
 
-async function init() {
-  state.stage = await loadStage(1);
+function applyStageToState(stage) {
+  state.stage = stage;
   state.player = { x: 0, y: 0 };
   state.history = [];
   state.cleared = false;
@@ -21,6 +22,16 @@ async function init() {
       }
     }
   }
+}
+
+async function init() {
+  state.currentStage = 1;
+  applyStageToState(await loadStage(state.currentStage));
+}
+
+async function resetStage() {
+  applyStageToState(await loadStage(state.currentStage));
+  render();
 }
 
 function render() {
@@ -62,6 +73,9 @@ window.addEventListener('load', async () => {
       if (undo(state)) {
         render();
       }
+    },
+    () => {
+      resetStage();
     }
   );
   gameLoop();
