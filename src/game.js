@@ -126,14 +126,17 @@ async function goToNextStage() {
 }
 
 function onStageClear() {
-  beginStageClear(state);
+  const stageKey = String(state.currentStage);
+  const prevBest = state.progress.bestMoves[stageKey];
+  const isNewBest = prevBest === undefined || state.moves < prevBest;
+
+  beginStageClear(state, { isNewBest });
+
   if (!state.progress.cleared.includes(state.currentStage)) {
     state.progress.cleared.push(state.currentStage);
   }
 
-  const stageKey = String(state.currentStage);
-  const best = state.progress.bestMoves[stageKey];
-  if (best === undefined || state.moves < best) {
+  if (isNewBest) {
     state.progress.bestMoves[stageKey] = state.moves;
   }
 

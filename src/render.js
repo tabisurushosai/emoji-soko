@@ -83,9 +83,17 @@ function drawClearEffect(ctx, clearEffect) {
   ctx.textBaseline = 'middle';
   ctx.fillText('STAGE CLEAR', canvas.width / 2, canvas.height / 2);
 
+  if (clearEffect.isNewBest) {
+    ctx.globalAlpha = fade;
+    ctx.fillStyle = '#ffd700';
+    ctx.font = 'bold 28px system-ui, sans-serif';
+    ctx.fillText('NEW BEST!', canvas.width / 2, canvas.height / 2 + 44);
+  }
+
   ctx.globalAlpha = fade * 0.85;
+  ctx.fillStyle = '#fff';
   ctx.font = '22px system-ui, sans-serif';
-  ctx.fillText('🎉', canvas.width / 2, canvas.height / 2 + 52);
+  ctx.fillText('🎉', canvas.width / 2, canvas.height / 2 + (clearEffect.isNewBest ? 78 : 52));
 
   ctx.globalAlpha = 1;
 }

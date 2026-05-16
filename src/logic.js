@@ -106,11 +106,12 @@ function checkClear(state) {
 
 const CLEAR_EFFECT_DURATION = 1500;
 
-function beginStageClear(state) {
+function beginStageClear(state, options = {}) {
   state.cleared = true;
   state.clearEffect = {
     startTime: performance.now(),
     particles: null,
+    isNewBest: options.isNewBest ?? false,
   };
 }
 
