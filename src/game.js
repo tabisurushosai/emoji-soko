@@ -8,6 +8,7 @@ const state = {
   cleared: false,
   currentStage: 1,
   progress: null,
+  showStageSelect: false,
 };
 
 let transitionTimer = null;
@@ -67,6 +68,24 @@ function onStageClear() {
   }, 2000);
 }
 
+async function selectStage(num) {
+  state.currentStage = num;
+  state.progress.currentStage = num;
+  saveProgress(state.progress);
+  cancelStageTransition();
+  applyStageToState(await loadStage(num));
+  state.showStageSelect = false;
+  render();
+}
+
+function toggleStageSelect() {
+  state.showStageSelect = !state.showStageSelect;
+  if (state.showStageSelect) {
+    cancelStageTransition();
+  }
+  render();
+}
+
 async function resetStage() {
   cancelStageTransition();
   applyStageToState(await loadStage(state.currentStage));
@@ -74,6 +93,11 @@ async function resetStage() {
 }
 
 function render() {
+  if (state.showStageSelect) {
+    drawStageSelect(ctx, state.progress);
+    return;
+  }
+
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -99,8 +123,10 @@ function gameLoop() {
 
 window.addEventListener('load', async () => {
   await init();
+  registerStageSelectInput(canvas, () => state, selectStage);
   registerInput(
     (dir) => {
+      if (state.showStageSelect) return;
       if (tryMove(state, dir)) {
         if (checkClear(state)) {
           onStageClear();
@@ -109,12 +135,17 @@ window.addEventListener('load', async () => {
       }
     },
     () => {
+      if (state.showStageSelect) return;
       if (undo(state)) {
         render();
       }
     },
     () => {
+      if (state.showStageSelect) return;
       resetStage();
+    },
+    () => {
+      toggleStageSelect();
     }
   );
   gameLoop();
