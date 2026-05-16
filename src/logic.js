@@ -27,6 +27,7 @@ function createStateSnapshot(state) {
     player: { ...state.player },
     cleared: state.cleared,
     clearEffect: null,
+    moves: state.moves,
   };
 }
 
@@ -39,6 +40,7 @@ function undo(state) {
   state.player = restored.player;
   state.cleared = restored.cleared;
   state.clearEffect = restored.clearEffect ?? null;
+  state.moves = restored.moves ?? 0;
   return true;
 }
 

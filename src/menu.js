@@ -73,17 +73,29 @@ function drawStageSelect(ctx, progress, difficultyFilter = 'all') {
       ctx.textBaseline = 'middle';
       ctx.fillText('·', cx, cy);
     } else if (progress.cleared.includes(stageNum)) {
-      ctx.font = `${Math.floor(cellSize * 0.45)}px "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
-      ctx.fillStyle = '#fff';
+      const best = progress.bestMoves[String(stageNum)];
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('✓', cx, cy);
+      ctx.font = `${Math.floor(cellSize * 0.4)}px "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+      ctx.fillStyle = '#fff';
+      ctx.fillText('✓', cx, cy - (best !== undefined ? 6 : 0));
+      if (best !== undefined) {
+        ctx.font = `bold ${Math.floor(cellSize * 0.22)}px system-ui, sans-serif`;
+        ctx.fillStyle = '#aaa';
+        ctx.fillText(String(best), cx, cy + 10);
+      }
     } else if (isStageUnlocked(progress, stageNum)) {
+      const best = progress.bestMoves[String(stageNum)];
       ctx.font = `bold ${Math.floor(cellSize * 0.35)}px system-ui, sans-serif`;
       ctx.fillStyle = '#fff';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(String(stageNum), cx, cy);
+      ctx.fillText(String(stageNum), cx, cy - (best !== undefined ? 5 : 0));
+      if (best !== undefined) {
+        ctx.font = `${Math.floor(cellSize * 0.22)}px system-ui, sans-serif`;
+        ctx.fillStyle = '#888';
+        ctx.fillText(String(best), cx, cy + 10);
+      }
     } else {
       ctx.font = `${Math.floor(cellSize * 0.4)}px "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
       ctx.fillStyle = '#666';

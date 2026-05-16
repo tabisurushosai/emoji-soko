@@ -90,6 +90,23 @@ function drawClearEffect(ctx, clearEffect) {
   ctx.globalAlpha = 1;
 }
 
+function drawMoveHud(ctx, stageNum, moves, bestMoves) {
+  const canvas = ctx.canvas;
+  const key = String(stageNum);
+  const best = bestMoves[key];
+
+  ctx.fillStyle = '#fff';
+  ctx.font = '18px system-ui, sans-serif';
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'top';
+
+  let label = `STAGE ${String(stageNum).padStart(2, '0')}  手数: ${moves}`;
+  if (best !== undefined) {
+    label += `  BEST: ${best}`;
+  }
+  ctx.fillText(label, canvas.width - 16, 12);
+}
+
 function renderStage(ctx, stage) {
   const rows = stage.length;
   const cols = stage[0]?.length ?? 0;

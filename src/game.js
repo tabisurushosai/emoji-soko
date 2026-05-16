@@ -13,6 +13,7 @@ const state = {
   titleMenuIndex: 0,
   settings: null,
   settingsMenuIndex: 0,
+  moves: 0,
 };
 
 let transitionTimer = null;
@@ -30,6 +31,7 @@ function applyStageToState(stage) {
   state.history = [];
   state.cleared = false;
   state.clearEffect = null;
+  state.moves = 0;
 
   for (const row of state.stage) {
     for (const cell of row) {
@@ -128,6 +130,13 @@ function onStageClear() {
   if (!state.progress.cleared.includes(state.currentStage)) {
     state.progress.cleared.push(state.currentStage);
   }
+
+  const stageKey = String(state.currentStage);
+  const best = state.progress.bestMoves[stageKey];
+  if (best === undefined || state.moves < best) {
+    state.progress.bestMoves[stageKey] = state.moves;
+  }
+
   saveProgress(state.progress);
 
   cancelStageTransition();
@@ -187,6 +196,7 @@ function render() {
 
   if (state.stage) {
     renderStage(ctx, state.stage);
+    drawMoveHud(ctx, state.currentStage, state.moves, state.progress.bestMoves);
   }
 
   if (state.clearEffect) {
@@ -237,6 +247,7 @@ window.addEventListener('load', async () => {
     (dir) => {
       if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
       if (tryMove(state, dir)) {
+        state.moves++;
         if (checkClear(state)) {
           onStageClear();
         }
