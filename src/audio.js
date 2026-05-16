@@ -37,6 +37,20 @@ function getBGMMasterGain() {
   return bgmMasterGain;
 }
 
+function getBGMVolumeScale() {
+  if (typeof getSettings !== 'function') return 1;
+  return getSettings().bgmVolume ?? 1;
+}
+
+function getSEVolumeScale() {
+  if (typeof getSettings !== 'function') return 1;
+  return getSettings().seVolume ?? 1;
+}
+
+function applyBGMVolume() {
+  getBGMMasterGain().gain.value = getBGMVolumeScale();
+}
+
 function duckBGM(durationSec) {
   if (!bgmPlaying) return;
   if (typeof getSettings === 'function' && !getSettings().bgm) return;
@@ -44,11 +58,12 @@ function duckBGM(durationSec) {
   const ctx = getAudioContext();
   const master = getBGMMasterGain();
   const now = ctx.currentTime;
+  const baseVolume = getBGMVolumeScale();
 
   master.gain.cancelScheduledValues(now);
   master.gain.setValueAtTime(master.gain.value, now);
-  master.gain.linearRampToValueAtTime(0.2, now + 0.08);
-  master.gain.linearRampToValueAtTime(1, now + durationSec);
+  master.gain.linearRampToValueAtTime(baseVolume * 0.2, now + 0.08);
+  master.gain.linearRampToValueAtTime(baseVolume, now + durationSec);
 }
 
 function play8BitNote(freq, startTime, duration, volume = BGM_VOLUME) {
@@ -116,6 +131,7 @@ async function playBGM() {
 
   stopBGM();
   bgmPlaying = true;
+  applyBGMVolume();
   scheduleBGMLoop();
 }
 
@@ -146,31 +162,33 @@ function playSE(name) {
     ctx.resume();
   }
 
+  const seVol = SE_VOLUME * getSEVolumeScale();
+
   switch (name) {
     case 'move':
-      playSETone(880, 0.04, SE_VOLUME);
+      playSETone(880, 0.04, seVol);
       break;
     case 'push':
-      playSETone(110, 0.12, SE_VOLUME * 1.2);
+      playSETone(110, 0.12, seVol * 1.2);
       break;
     case 'goal':
-      playSETone(1174.66, 0.08, SE_VOLUME);
-      playSETone(1567.98, 0.1, SE_VOLUME * 0.85, 'square', 0.06);
+      playSETone(1174.66, 0.08, seVol);
+      playSETone(1567.98, 0.1, seVol * 0.85, 'square', 0.06);
       break;
     case 'clear': {
       duckBGM(CLEAR_JINGLE_DURATION);
       const step = CLEAR_JINGLE_DURATION / CLEAR_JINGLE_NOTES.length;
       CLEAR_JINGLE_NOTES.forEach((freq, i) => {
-        playSETone(freq, step * 0.85, SE_VOLUME, 'square', i * step);
+        playSETone(freq, step * 0.85, seVol, 'square', i * step);
       });
       break;
     }
     case 'error':
-      playSETone(220, 0.06, SE_VOLUME);
-      playSETone(165, 0.08, SE_VOLUME, 'square', 0.05);
+      playSETone(220, 0.06, seVol);
+      playSETone(165, 0.08, seVol, 'square', 0.05);
       break;
     case 'undo':
-      playSETone(620, 0.05, SE_VOLUME * 0.7, 'triangle');
+      playSETone(620, 0.05, seVol * 0.7, 'triangle');
       break;
     default:
       break;

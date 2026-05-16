@@ -237,8 +237,13 @@ window.addEventListener('load', async () => {
       toggleSettingsValue(state.settings, state.settingsMenuIndex);
       render();
     },
+    onAdjust(delta) {
+      adjustSettingsValue(state.settings, state.settingsMenuIndex, delta);
+      render();
+    },
     onBack: goToTitle,
   });
+  registerSettingsPointerInput(canvas, () => state, render);
   registerTitleInput(() => state, {
     onUp() {
       state.titleMenuIndex =
