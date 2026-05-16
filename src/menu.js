@@ -51,6 +51,8 @@ function drawStageSelect(ctx, progress, difficultyFilter = 'all') {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  drawProgressLabel(ctx, progress, 22);
+
   ctx.strokeStyle = '#333';
   ctx.lineWidth = 1;
 

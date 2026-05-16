@@ -175,7 +175,7 @@ async function resetStage() {
 
 function render() {
   if (state.screen === 'title') {
-    drawTitleScreen(ctx, state.titleMenuIndex);
+    drawTitleScreen(ctx, state.titleMenuIndex, state.progress);
     return;
   }
 

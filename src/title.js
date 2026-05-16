@@ -6,7 +6,7 @@ const TITLE_MENU = [
   'HELP',
 ];
 
-function drawTitleScreen(ctx, selectedIndex) {
+function drawTitleScreen(ctx, selectedIndex, progress) {
   const canvas = ctx.canvas;
 
   ctx.fillStyle = '#000';
@@ -21,6 +21,8 @@ function drawTitleScreen(ctx, selectedIndex) {
 
   ctx.font = '24px system-ui, sans-serif';
   ctx.fillText('絵文字の蔵', canvas.width / 2, 175);
+
+  drawProgressLabel(ctx, progress, 215);
 
   const startY = 290;
   const lineHeight = 44;
