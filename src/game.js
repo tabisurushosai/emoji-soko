@@ -123,6 +123,15 @@ function goToTitle() {
   render();
 }
 
+function showEnding() {
+  state.screen = 'ending';
+  state.cleared = false;
+  state.clearEffect = null;
+  state.stage = null;
+  cancelStageTransition();
+  render();
+}
+
 async function goToNextStage() {
   const nextStage = state.currentStage + 1;
   if (!(await stageExists(nextStage))) {
@@ -151,11 +160,18 @@ function onStageClear() {
     state.progress.bestMoves[stageKey] = state.moves;
   }
 
+  state.progress.totalClearMoves =
+    (state.progress.totalClearMoves ?? 0) + state.moves;
+
   saveProgress(state.progress);
 
   cancelStageTransition();
   transitionTimer = setTimeout(async () => {
     if (!state.cleared) return;
+    if (isAllStagesCleared(state.progress)) {
+      showEnding();
+      return;
+    }
     await goToNextStage();
   }, 2000);
 }
@@ -200,6 +216,11 @@ function render() {
     return;
   }
 
+  if (state.screen === 'ending') {
+    drawEndingScreen(ctx, state.progress);
+    return;
+  }
+
   if (state.showStageSelect) {
     drawStageSelect(ctx, state.progress, state.settings.difficultyFilter);
     return;
@@ -235,6 +256,7 @@ window.addEventListener('load', async () => {
   await init();
   registerStageSelectInput(canvas, () => state, selectStage);
   registerHelpInput(() => state, goToTitle);
+  registerEndingInput(() => state, goToTitle);
   registerSettingsInput(() => state, {
     onUp() {
       state.settingsMenuIndex =
