@@ -62,3 +62,17 @@ function tryMove(state, dir) {
 
   return false;
 }
+
+function checkClear(state) {
+  let looseBoxes = 0;
+  let boxesOnGoal = 0;
+
+  for (const row of state.stage) {
+    for (const cell of row) {
+      if (cell.type === 'BOX') looseBoxes++;
+      if (cell.type === 'BOX_ON_GOAL') boxesOnGoal++;
+    }
+  }
+
+  return looseBoxes === 0 && boxesOnGoal > 0;
+}
