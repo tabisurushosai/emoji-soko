@@ -13,8 +13,14 @@ const keyMap = {
   L: 'right',
 };
 
-function registerInput(onMove) {
+function registerInput(onMove, onUndo) {
   window.addEventListener('keydown', (event) => {
+    if (event.key === 'z' || event.key === 'Z') {
+      event.preventDefault();
+      onUndo();
+      return;
+    }
+
     const dir = keyMap[event.key];
     if (!dir) return;
 

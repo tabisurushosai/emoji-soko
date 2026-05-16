@@ -21,6 +21,25 @@ function playerTypeOnBoxCell(boxType) {
   return boxType === 'BOX_ON_GOAL' ? 'PLAYER_ON_GOAL' : 'PLAYER';
 }
 
+function createStateSnapshot(state) {
+  return {
+    stage: state.stage.map((row) => row.map((cell) => ({ ...cell }))),
+    player: { ...state.player },
+    cleared: state.cleared,
+  };
+}
+
+function undo(state) {
+  const snapshot = state.history.pop();
+  if (!snapshot) return false;
+
+  const restored = JSON.parse(snapshot);
+  state.stage = restored.stage;
+  state.player = restored.player;
+  state.cleared = restored.cleared;
+  return true;
+}
+
 function tryMove(state, dir) {
   const delta = DIR_DELTA[dir];
   if (!delta) return false;
@@ -44,6 +63,8 @@ function tryMove(state, dir) {
     const beyondType = beyondCell.type;
     if (beyondType !== 'FLOOR' && beyondType !== 'GOAL') return false;
 
+    state.history.push(JSON.stringify(createStateSnapshot(state)));
+
     const currentCell = state.stage[py][px];
     currentCell.type = floorTypeUnderPlayer(currentCell.type);
     beyondCell.type = boxTypeOn(beyondType);
@@ -53,6 +74,8 @@ function tryMove(state, dir) {
   }
 
   if (nextType === 'FLOOR' || nextType === 'GOAL') {
+    state.history.push(JSON.stringify(createStateSnapshot(state)));
+
     const currentCell = state.stage[py][px];
     currentCell.type = floorTypeUnderPlayer(currentCell.type);
     nextCell.type = playerTypeOn(nextType);

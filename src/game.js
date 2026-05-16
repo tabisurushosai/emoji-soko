@@ -49,13 +49,20 @@ function gameLoop() {
 
 window.addEventListener('load', async () => {
   await init();
-  registerInput((dir) => {
-    if (tryMove(state, dir)) {
-      if (checkClear(state)) {
-        state.cleared = true;
+  registerInput(
+    (dir) => {
+      if (tryMove(state, dir)) {
+        if (checkClear(state)) {
+          state.cleared = true;
+        }
+        render();
       }
-      render();
+    },
+    () => {
+      if (undo(state)) {
+        render();
+      }
     }
-  });
+  );
   gameLoop();
 });
