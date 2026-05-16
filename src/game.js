@@ -10,6 +10,15 @@ const state = {
   progress: null,
 };
 
+let transitionTimer = null;
+
+function cancelStageTransition() {
+  if (transitionTimer) {
+    clearTimeout(transitionTimer);
+    transitionTimer = null;
+  }
+}
+
 function applyStageToState(stage) {
   state.stage = stage;
   state.player = { x: 0, y: 0 };
@@ -31,7 +40,35 @@ async function init() {
   applyStageToState(await loadStage(state.currentStage));
 }
 
+async function goToNextStage() {
+  const nextStage = state.currentStage + 1;
+  if (!(await stageExists(nextStage))) {
+    return;
+  }
+
+  state.currentStage = nextStage;
+  state.progress.currentStage = nextStage;
+  saveProgress(state.progress);
+  applyStageToState(await loadStage(nextStage));
+  render();
+}
+
+function onStageClear() {
+  state.cleared = true;
+  if (!state.progress.cleared.includes(state.currentStage)) {
+    state.progress.cleared.push(state.currentStage);
+  }
+  saveProgress(state.progress);
+
+  cancelStageTransition();
+  transitionTimer = setTimeout(async () => {
+    if (!state.cleared) return;
+    await goToNextStage();
+  }, 2000);
+}
+
 async function resetStage() {
+  cancelStageTransition();
   applyStageToState(await loadStage(state.currentStage));
   render();
 }
@@ -66,11 +103,7 @@ window.addEventListener('load', async () => {
     (dir) => {
       if (tryMove(state, dir)) {
         if (checkClear(state)) {
-          state.cleared = true;
-          if (!state.progress.cleared.includes(state.currentStage)) {
-            state.progress.cleared.push(state.currentStage);
-          }
-          saveProgress(state.progress);
+          onStageClear();
         }
         render();
       }
