@@ -3,6 +3,10 @@ const BGM_VOLUME = 0.1;
 const SE_VOLUME = 0.15;
 const BGM_BARS = 8;
 const BEATS_PER_BAR = 4;
+const CLEAR_JINGLE_DURATION = 1.5;
+const CLEAR_JINGLE_NOTES = [
+  523.25, 587.33, 659.25, 698.46, 783.99, 880.0, 987.77, 1046.5,
+];
 
 const BGM_CHORDS = [
   [261.63, 329.63, 392.0, 329.63],
@@ -12,6 +16,7 @@ const BGM_CHORDS = [
 ];
 
 let audioCtx = null;
+let bgmMasterGain = null;
 let bgmPlaying = false;
 let bgmLoopTimer = null;
 
@@ -20,6 +25,30 @@ function getAudioContext() {
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   }
   return audioCtx;
+}
+
+function getBGMMasterGain() {
+  if (!bgmMasterGain) {
+    const ctx = getAudioContext();
+    bgmMasterGain = ctx.createGain();
+    bgmMasterGain.gain.value = 1;
+    bgmMasterGain.connect(ctx.destination);
+  }
+  return bgmMasterGain;
+}
+
+function duckBGM(durationSec) {
+  if (!bgmPlaying) return;
+  if (typeof getSettings === 'function' && !getSettings().bgm) return;
+
+  const ctx = getAudioContext();
+  const master = getBGMMasterGain();
+  const now = ctx.currentTime;
+
+  master.gain.cancelScheduledValues(now);
+  master.gain.setValueAtTime(master.gain.value, now);
+  master.gain.linearRampToValueAtTime(0.2, now + 0.08);
+  master.gain.linearRampToValueAtTime(1, now + durationSec);
 }
 
 function play8BitNote(freq, startTime, duration, volume = BGM_VOLUME) {
@@ -35,7 +64,7 @@ function play8BitNote(freq, startTime, duration, volume = BGM_VOLUME) {
   gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
   osc.connect(gain);
-  gain.connect(ctx.destination);
+  gain.connect(getBGMMasterGain());
   osc.start(startTime);
   osc.stop(startTime + duration + 0.05);
 }
@@ -128,11 +157,14 @@ function playSE(name) {
       playSETone(1174.66, 0.08, SE_VOLUME);
       playSETone(1567.98, 0.1, SE_VOLUME * 0.85, 'square', 0.06);
       break;
-    case 'clear':
-      [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
-        playSETone(freq, 0.14, SE_VOLUME, 'square', i * 0.12);
+    case 'clear': {
+      duckBGM(CLEAR_JINGLE_DURATION);
+      const step = CLEAR_JINGLE_DURATION / CLEAR_JINGLE_NOTES.length;
+      CLEAR_JINGLE_NOTES.forEach((freq, i) => {
+        playSETone(freq, step * 0.85, SE_VOLUME, 'square', i * step);
       });
       break;
+    }
     case 'error':
       playSETone(220, 0.06, SE_VOLUME);
       playSETone(165, 0.08, SE_VOLUME, 'square', 0.05);
