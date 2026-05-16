@@ -90,7 +90,7 @@ function tryMove(state, dir) {
     if (beyondType === 'GOAL') {
       playSE('goal');
     }
-    return true;
+    return 'push';
   }
 
   if (nextType === 'FLOOR' || nextType === 'GOAL') {
@@ -101,7 +101,7 @@ function tryMove(state, dir) {
     nextCell.type = playerTypeOn(nextType);
     state.player = { x: nx, y: ny };
     playSE('move');
-    return true;
+    return 'move';
   }
 
   return false;

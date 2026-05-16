@@ -15,6 +15,7 @@ const state = {
   settingsMenuIndex: 0,
   moves: 0,
   playerAnim: null,
+  boxShake: null,
 };
 
 let transitionTimer = null;
@@ -34,6 +35,7 @@ function applyStageToState(stage) {
   state.clearEffect = null;
   state.moves = 0;
   state.playerAnim = null;
+  state.boxShake = null;
 
   for (const row of state.stage) {
     for (const cell of row) {
@@ -208,7 +210,10 @@ function render() {
     if (state.playerAnim && !isPlayerAnimating(state.playerAnim)) {
       state.playerAnim = null;
     }
-    renderStage(ctx, state.stage, state.player, state.playerAnim);
+    if (state.boxShake && !isBoxShaking(state.boxShake)) {
+      state.boxShake = null;
+    }
+    renderStage(ctx, state.stage, state.player, state.playerAnim, state.boxShake);
     drawMoveHud(ctx, state.currentStage, state.moves, state.progress.bestMoves);
   }
 
@@ -268,13 +273,22 @@ window.addEventListener('load', async () => {
 
       const fromX = state.player.x;
       const fromY = state.player.y;
-      if (tryMove(state, dir)) {
+      const result = tryMove(state, dir);
+      if (result) {
         state.playerAnim = createPlayerAnim(
           fromX,
           fromY,
           state.player.x,
           state.player.y
         );
+        if (result === 'push') {
+          const delta = DIR_DELTA[dir];
+          state.boxShake = createBoxShake(
+            state.player.x + delta.x,
+            state.player.y + delta.y,
+            dir
+          );
+        }
         state.moves++;
         if (checkClear(state)) {
           onStageClear();
@@ -286,6 +300,7 @@ window.addEventListener('load', async () => {
       if (isPlayerAnimating(state.playerAnim)) return false;
       if (undo(state)) {
         state.playerAnim = null;
+        state.boxShake = null;
         render();
         return true;
       }

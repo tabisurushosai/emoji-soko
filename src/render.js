@@ -1,5 +1,14 @@
 const CELL_SIZE = 48;
 const PLAYER_ANIM_DURATION = 150;
+const BOX_SHAKE_DURATION = 200;
+const BOX_SHAKE_AMOUNT = 3;
+
+const SHAKE_DIR_DELTA = {
+  up: { x: 0, y: -1 },
+  down: { x: 0, y: 1 },
+  left: { x: -1, y: 0 },
+  right: { x: 1, y: 0 },
+};
 
 function easeOutQuad(t) {
   return 1 - (1 - t) * (1 - t);
@@ -7,6 +16,39 @@ function easeOutQuad(t) {
 
 function isPlayerCell(type) {
   return type === 'PLAYER' || type === 'PLAYER_ON_GOAL';
+}
+
+function isBoxCell(type) {
+  return type === 'BOX' || type === 'BOX_ON_GOAL';
+}
+
+function createBoxShake(boxX, boxY, dir) {
+  const delta = SHAKE_DIR_DELTA[dir] || { x: 0, y: 0 };
+  return {
+    boxX,
+    boxY,
+    dx: delta.x,
+    dy: delta.y,
+    startTime: performance.now(),
+    duration: BOX_SHAKE_DURATION,
+  };
+}
+
+function isBoxShaking(boxShake) {
+  if (!boxShake) return false;
+  return performance.now() - boxShake.startTime < boxShake.duration;
+}
+
+function getBoxShakeOffset(boxShake) {
+  const elapsed = performance.now() - boxShake.startTime;
+  const t = Math.min(elapsed / boxShake.duration, 1);
+  const damp = 1 - t;
+  const wave = Math.sin(t * Math.PI * 4);
+  const amount = BOX_SHAKE_AMOUNT * damp * wave;
+  return {
+    x: boxShake.dx * amount,
+    y: boxShake.dy * amount,
+  };
 }
 
 function createPlayerAnim(fromX, fromY, toX, toY) {
@@ -149,7 +191,7 @@ function drawMoveHud(ctx, stageNum, moves, bestMoves) {
   ctx.fillText(label, canvas.width - 16, 12);
 }
 
-function renderStage(ctx, stage, player, playerAnim) {
+function renderStage(ctx, stage, player, playerAnim, boxShake) {
   const rows = stage.length;
   const cols = stage[0]?.length ?? 0;
   const { originX, originY } = getStageOrigin(ctx.canvas, cols, rows);
@@ -170,7 +212,22 @@ function renderStage(ctx, stage, player, playerAnim) {
 
       const emoji = EMOJI_MAP[cell.type];
       if (emoji) {
-        drawEmoji(ctx, emoji, originX + x * CELL_SIZE, originY + y * CELL_SIZE);
+        let drawX = originX + x * CELL_SIZE;
+        let drawY = originY + y * CELL_SIZE;
+
+        if (
+          boxShake &&
+          isBoxShaking(boxShake) &&
+          x === boxShake.boxX &&
+          y === boxShake.boxY &&
+          isBoxCell(cell.type)
+        ) {
+          const offset = getBoxShakeOffset(boxShake);
+          drawX += offset.x;
+          drawY += offset.y;
+        }
+
+        drawEmoji(ctx, emoji, drawX, drawY);
       }
     }
   }
