@@ -26,6 +26,13 @@ function render() {
   if (state.stage) {
     drawGrid(ctx, state.stage.width, state.stage.height);
   }
+
+  drawEmoji(
+    ctx,
+    '🧑',
+    canvas.width / 2 - CELL_SIZE / 2,
+    canvas.height / 2 - CELL_SIZE / 2
+  );
 }
 
 function gameLoop() {

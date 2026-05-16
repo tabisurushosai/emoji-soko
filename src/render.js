@@ -30,3 +30,10 @@ function drawGrid(ctx, cols, rows) {
 
   ctx.stroke();
 }
+
+function drawEmoji(ctx, emoji, x, y, size = 40) {
+  ctx.font = `${size}px "Apple Color Emoji", "Segoe UI Emoji"`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(emoji, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
+}
