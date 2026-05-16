@@ -3,6 +3,18 @@
 絵文字を押して所定の位置に並べる倉庫番パズル、100ステージ、HTML5
 
 - GitHub: https://github.com/tabisurushosai/emoji-soko
+- itch.io: https://tabisurushosai.itch.io/emoji-soko-tabisurushosai
+
+## 公開完了
+
+**EMOJI SOKO（絵文字の蔵）** を itch.io で公開しました。
+
+| リンク | URL |
+|---|---|
+| プレイ | https://tabisurushosai.itch.io/emoji-soko-tabisurushosai |
+| ソースコード | https://github.com/tabisurushosai/emoji-soko |
+
+SNS 告知文は `SNS_ANNOUNCE.md` を参照してください。
 
 ## 公開手順
 

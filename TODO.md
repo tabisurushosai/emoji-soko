@@ -1,52 +1,52 @@
 # TODO
 
 - [x] emoji-soko-001: git init + ディレクトリ構造
-- [ ] emoji-soko-002: index.html + style.css 雛形
-- [ ] emoji-soko-003: main.js 雛形 + エントリポイント
-- [ ] emoji-soko-004: ゲームボード描画 (グリッド)
-- [ ] emoji-soko-005: 絵文字タイル表示
-- [ ] emoji-soko-006: プレイヤー (押し手) 表示
-- [ ] emoji-soko-007: キーボード入力 (矢印キー)
-- [ ] emoji-soko-008: タッチ / スワイプ入力
-- [ ] emoji-soko-009: 移動ロジック (壁判定)
-- [ ] emoji-soko-010: 押しロジック (箱を押す)
-- [ ] emoji-soko-011: ゴール判定
-- [ ] emoji-soko-012: ステージクリア処理
-- [ ] emoji-soko-013: ステージデータ形式定義 (JSON)
-- [ ] emoji-soko-014: ステージローダー
-- [ ] emoji-soko-015: サンプルステージ 1 作成
-- [ ] emoji-soko-016: リセット機能
-- [ ] emoji-soko-017: アンドゥ機能
-- [ ] emoji-soko-018: 手数カウンター
-- [ ] emoji-soko-019: タイマー
-- [ ] emoji-soko-020: ステージ選択画面
-- [ ] emoji-soko-021: ステージ 1〜10 作成
-- [ ] emoji-soko-022: ステージ 11〜20 作成
-- [ ] emoji-soko-023: ステージ 21〜30 作成
-- [ ] emoji-soko-024: ステージ 31〜40 作成
-- [ ] emoji-soko-025: ステージ 41〜50 作成
-- [ ] emoji-soko-026: ステージ 51〜60 作成
-- [ ] emoji-soko-027: ステージ 61〜70 作成
-- [ ] emoji-soko-028: ステージ 71〜80 作成
-- [ ] emoji-soko-029: ステージ 81〜90 作成
-- [ ] emoji-soko-030: ステージ 91〜100 作成
-- [ ] emoji-soko-031: クリア済みステージ保存 (localStorage)
-- [ ] emoji-soko-032: ベスト手数保存
-- [ ] emoji-soko-033: サウンド効果 (移動・クリア)
-- [ ] emoji-soko-034: BGM (任意)
-- [ ] emoji-soko-035: タイトル画面
-- [ ] emoji-soko-036: ポーズ / メニュー
-- [ ] emoji-soko-037: ヘルプ / 操作説明
-- [ ] emoji-soko-038: レスポンシブレイアウト
-- [ ] emoji-soko-039: ダークモード対応
-- [ ] emoji-soko-040: アニメーション (移動・クリア)
-- [ ] emoji-soko-041: アクセシビリティ (ARIA)
-- [ ] emoji-soko-042: PWA manifest
-- [ ] emoji-soko-043: オフライン対応 (Service Worker)
-- [ ] emoji-soko-044: legal/privacy.html
-- [ ] emoji-soko-045: legal/terms.html
-- [ ] emoji-soko-046: OGP / メタタグ
-- [ ] emoji-soko-047: パフォーマンス最適化
-- [ ] emoji-soko-048: クロスブラウザテスト
-- [ ] emoji-soko-049: README 更新 (遊び方・デプロイ)
-- [ ] emoji-soko-050: リリース準備 (dist ビルド・zip)
+- [x] emoji-soko-002: index.html + style.css 雛形
+- [x] emoji-soko-003: main.js 雛形 + エントリポイント
+- [x] emoji-soko-004: ゲームボード描画 (グリッド)
+- [x] emoji-soko-005: 絵文字タイル表示
+- [x] emoji-soko-006: プレイヤー (押し手) 表示
+- [x] emoji-soko-007: キーボード入力 (矢印キー)
+- [x] emoji-soko-008: タッチ / スワイプ入力
+- [x] emoji-soko-009: 移動ロジック (壁判定)
+- [x] emoji-soko-010: 押しロジック (箱を押す)
+- [x] emoji-soko-011: ゴール判定
+- [x] emoji-soko-012: ステージクリア処理
+- [x] emoji-soko-013: ステージデータ形式定義 (JSON)
+- [x] emoji-soko-014: ステージローダー
+- [x] emoji-soko-015: サンプルステージ 1 作成
+- [x] emoji-soko-016: リセット機能
+- [x] emoji-soko-017: アンドゥ機能
+- [x] emoji-soko-018: 手数カウンター
+- [x] emoji-soko-019: タイマー
+- [x] emoji-soko-020: ステージ選択画面
+- [x] emoji-soko-021: ステージ 1〜10 作成
+- [x] emoji-soko-022: ステージ 11〜20 作成
+- [x] emoji-soko-023: ステージ 21〜30 作成
+- [x] emoji-soko-024: ステージ 31〜40 作成
+- [x] emoji-soko-025: ステージ 41〜50 作成
+- [x] emoji-soko-026: ステージ 51〜60 作成
+- [x] emoji-soko-027: ステージ 61〜70 作成
+- [x] emoji-soko-028: ステージ 71〜80 作成
+- [x] emoji-soko-029: ステージ 81〜90 作成
+- [x] emoji-soko-030: ステージ 91〜100 作成
+- [x] emoji-soko-031: クリア済みステージ保存 (localStorage)
+- [x] emoji-soko-032: ベスト手数保存
+- [x] emoji-soko-033: サウンド効果 (移動・クリア)
+- [x] emoji-soko-034: BGM (任意)
+- [x] emoji-soko-035: タイトル画面
+- [x] emoji-soko-036: ポーズ / メニュー
+- [x] emoji-soko-037: ヘルプ / 操作説明
+- [x] emoji-soko-038: レスポンシブレイアウト
+- [x] emoji-soko-039: ダークモード対応
+- [x] emoji-soko-040: アニメーション (移動・クリア)
+- [x] emoji-soko-041: アクセシビリティ (ARIA)
+- [x] emoji-soko-042: PWA manifest
+- [x] emoji-soko-043: オフライン対応 (Service Worker)
+- [x] emoji-soko-044: legal/privacy.html
+- [x] emoji-soko-045: legal/terms.html
+- [x] emoji-soko-046: OGP / メタタグ
+- [x] emoji-soko-047: パフォーマンス最適化
+- [x] emoji-soko-048: クロスブラウザテスト
+- [x] emoji-soko-049: README 更新 (遊び方・デプロイ)
+- [x] emoji-soko-050: リリース準備 (dist ビルド・zip)
