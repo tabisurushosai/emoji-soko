@@ -9,6 +9,8 @@ const state = {
   currentStage: 1,
   progress: null,
   showStageSelect: false,
+  screen: 'title',
+  titleMenuIndex: 0,
 };
 
 let transitionTimer = null;
@@ -38,7 +40,47 @@ function applyStageToState(stage) {
 async function init() {
   state.progress = getProgress();
   state.currentStage = state.progress.currentStage;
+  state.screen = 'title';
+  state.titleMenuIndex = 0;
+}
+
+async function startGame(fromContinue) {
+  state.screen = 'game';
+  state.showStageSelect = false;
+  cancelStageTransition();
+
+  if (fromContinue) {
+    state.currentStage = state.progress.currentStage;
+  } else {
+    state.currentStage = 1;
+    state.progress.currentStage = 1;
+    saveProgress(state.progress);
+  }
+
   applyStageToState(await loadStage(state.currentStage));
+  render();
+}
+
+function handleTitleConfirm() {
+  const choice = TITLE_MENU[state.titleMenuIndex];
+
+  if (choice === 'PLAY') {
+    startGame(false);
+    return;
+  }
+
+  if (choice === 'CONTINUE') {
+    startGame(true);
+    return;
+  }
+
+  if (choice === 'STAGE SELECT') {
+    state.screen = 'game';
+    state.showStageSelect = true;
+    state.stage = null;
+    cancelStageTransition();
+    render();
+  }
 }
 
 async function goToNextStage() {
@@ -93,6 +135,11 @@ async function resetStage() {
 }
 
 function render() {
+  if (state.screen === 'title') {
+    drawTitleScreen(ctx, state.titleMenuIndex);
+    return;
+  }
+
   if (state.showStageSelect) {
     drawStageSelect(ctx, state.progress);
     return;
@@ -124,9 +171,21 @@ function gameLoop() {
 window.addEventListener('load', async () => {
   await init();
   registerStageSelectInput(canvas, () => state, selectStage);
+  registerTitleInput(() => state, {
+    onUp() {
+      state.titleMenuIndex =
+        (state.titleMenuIndex - 1 + TITLE_MENU.length) % TITLE_MENU.length;
+      render();
+    },
+    onDown() {
+      state.titleMenuIndex = (state.titleMenuIndex + 1) % TITLE_MENU.length;
+      render();
+    },
+    onConfirm: handleTitleConfirm,
+  });
   registerInput(
     (dir) => {
-      if (state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect) return;
       if (tryMove(state, dir)) {
         if (checkClear(state)) {
           onStageClear();
@@ -135,16 +194,17 @@ window.addEventListener('load', async () => {
       }
     },
     () => {
-      if (state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect) return;
       if (undo(state)) {
         render();
       }
     },
     () => {
-      if (state.showStageSelect) return;
+      if (state.screen !== 'game' || state.showStageSelect) return;
       resetStage();
     },
     () => {
+      if (state.screen !== 'game') return;
       toggleStageSelect();
     }
   );
