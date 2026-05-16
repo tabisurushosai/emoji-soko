@@ -23,11 +23,9 @@ function render() {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold 48px system-ui, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('EMOJI SOKO', canvas.width / 2, canvas.height / 2);
+  if (state.stage) {
+    drawGrid(ctx, state.stage.width, state.stage.height);
+  }
 }
 
 function gameLoop() {
