@@ -17,7 +17,9 @@ function registerInput(onMove, onUndo, onReset, onToggleMenu) {
   window.addEventListener('keydown', (event) => {
     if (event.key === 'z' || event.key === 'Z') {
       event.preventDefault();
-      onUndo();
+      if (onUndo()) {
+        playSE('undo');
+      }
       return;
     }
 

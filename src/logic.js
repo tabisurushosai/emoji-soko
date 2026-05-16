@@ -52,20 +52,32 @@ function tryMove(state, dir) {
   const nx = px + delta.x;
   const ny = py + delta.y;
   const nextCell = state.stage[ny]?.[nx];
-  if (!nextCell) return false;
+  if (!nextCell) {
+    playSE('error');
+    return false;
+  }
 
   const nextType = nextCell.type;
 
-  if (nextType === 'WALL') return false;
+  if (nextType === 'WALL') {
+    playSE('error');
+    return false;
+  }
 
   if (nextType === 'BOX' || nextType === 'BOX_ON_GOAL') {
     const bx = nx + delta.x;
     const by = ny + delta.y;
     const beyondCell = state.stage[by]?.[bx];
-    if (!beyondCell) return false;
+    if (!beyondCell) {
+      playSE('error');
+      return false;
+    }
 
     const beyondType = beyondCell.type;
-    if (beyondType !== 'FLOOR' && beyondType !== 'GOAL') return false;
+    if (beyondType !== 'FLOOR' && beyondType !== 'GOAL') {
+      playSE('error');
+      return false;
+    }
 
     state.history.push(JSON.stringify(createStateSnapshot(state)));
 
@@ -74,6 +86,10 @@ function tryMove(state, dir) {
     beyondCell.type = boxTypeOn(beyondType);
     nextCell.type = playerTypeOnBoxCell(nextType);
     state.player = { x: nx, y: ny };
+    playSE('push');
+    if (beyondType === 'GOAL') {
+      playSE('goal');
+    }
     return true;
   }
 
@@ -84,6 +100,7 @@ function tryMove(state, dir) {
     currentCell.type = floorTypeUnderPlayer(currentCell.type);
     nextCell.type = playerTypeOn(nextType);
     state.player = { x: nx, y: ny };
+    playSE('move');
     return true;
   }
 
@@ -107,6 +124,7 @@ function checkClear(state) {
 const CLEAR_EFFECT_DURATION = 1500;
 
 function beginStageClear(state, options = {}) {
+  playSE('clear');
   state.cleared = true;
   state.clearEffect = {
     startTime: performance.now(),

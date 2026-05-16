@@ -1,5 +1,6 @@
 const BGM_BPM = 100;
 const BGM_VOLUME = 0.1;
+const SE_VOLUME = 0.15;
 const BGM_BARS = 8;
 const BEATS_PER_BAR = 4;
 
@@ -87,4 +88,59 @@ async function playBGM() {
   stopBGM();
   bgmPlaying = true;
   scheduleBGMLoop();
+}
+
+function playSETone(freq, duration, volume, type, delay) {
+  const ctx = getAudioContext();
+  const startTime = ctx.currentTime + (delay || 0);
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = type || 'square';
+  osc.frequency.value = freq;
+
+  gain.gain.setValueAtTime(0.0001, startTime);
+  gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.01);
+  gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(startTime);
+  osc.stop(startTime + duration + 0.05);
+}
+
+function playSE(name) {
+  if (typeof getSettings === 'function' && !getSettings().se) return;
+
+  const ctx = getAudioContext();
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
+
+  switch (name) {
+    case 'move':
+      playSETone(880, 0.04, SE_VOLUME);
+      break;
+    case 'push':
+      playSETone(110, 0.12, SE_VOLUME * 1.2);
+      break;
+    case 'goal':
+      playSETone(1174.66, 0.08, SE_VOLUME);
+      playSETone(1567.98, 0.1, SE_VOLUME * 0.85, 'square', 0.06);
+      break;
+    case 'clear':
+      [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+        playSETone(freq, 0.14, SE_VOLUME, 'square', i * 0.12);
+      });
+      break;
+    case 'error':
+      playSETone(220, 0.06, SE_VOLUME);
+      playSETone(165, 0.08, SE_VOLUME, 'square', 0.05);
+      break;
+    case 'undo':
+      playSETone(620, 0.05, SE_VOLUME * 0.7, 'triangle');
+      break;
+    default:
+      break;
+  }
 }

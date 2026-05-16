@@ -263,10 +263,12 @@ window.addEventListener('load', async () => {
       }
     },
     () => {
-      if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
+      if (state.screen !== 'game' || state.showStageSelect || state.cleared) return false;
       if (undo(state)) {
         render();
+        return true;
       }
+      return false;
     },
     () => {
       if (state.screen !== 'game' || state.showStageSelect || state.cleared) return;
