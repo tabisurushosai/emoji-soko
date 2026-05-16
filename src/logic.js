@@ -13,6 +13,14 @@ function playerTypeOn(targetType) {
   return targetType === 'GOAL' ? 'PLAYER_ON_GOAL' : 'PLAYER';
 }
 
+function boxTypeOn(targetType) {
+  return targetType === 'GOAL' ? 'BOX_ON_GOAL' : 'BOX';
+}
+
+function playerTypeOnBoxCell(boxType) {
+  return boxType === 'BOX_ON_GOAL' ? 'PLAYER_ON_GOAL' : 'PLAYER';
+}
+
 function tryMove(state, dir) {
   const delta = DIR_DELTA[dir];
   if (!delta) return false;
@@ -27,7 +35,22 @@ function tryMove(state, dir) {
 
   if (nextType === 'WALL') return false;
 
-  if (nextType === 'BOX' || nextType === 'BOX_ON_GOAL') return false;
+  if (nextType === 'BOX' || nextType === 'BOX_ON_GOAL') {
+    const bx = nx + delta.x;
+    const by = ny + delta.y;
+    const beyondCell = state.stage[by]?.[bx];
+    if (!beyondCell) return false;
+
+    const beyondType = beyondCell.type;
+    if (beyondType !== 'FLOOR' && beyondType !== 'GOAL') return false;
+
+    const currentCell = state.stage[py][px];
+    currentCell.type = floorTypeUnderPlayer(currentCell.type);
+    beyondCell.type = boxTypeOn(beyondType);
+    nextCell.type = playerTypeOnBoxCell(nextType);
+    state.player = { x: nx, y: ny };
+    return true;
+  }
 
   if (nextType === 'FLOOR' || nextType === 'GOAL') {
     const currentCell = state.stage[py][px];
