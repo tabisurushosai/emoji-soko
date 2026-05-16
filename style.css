@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+canvas#game {
+  border: 1px solid #fff;
+  image-rendering: pixelated;
+}
