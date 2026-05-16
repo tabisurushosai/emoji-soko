@@ -65,6 +65,11 @@ async function startGame(fromContinue) {
   }
 
   applyStageToState(await loadStage(state.currentStage));
+
+  if (!fromContinue && state.settings.bgm) {
+    playBGM();
+  }
+
   render();
 }
 
