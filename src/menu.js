@@ -44,7 +44,7 @@ function getCanvasPoint(canvas, clientX, clientY) {
   };
 }
 
-function drawStageSelect(ctx, progress) {
+function drawStageSelect(ctx, progress, difficultyFilter = 'all') {
   const canvas = ctx.canvas;
   const { cellSize, originX, originY } = getMenuLayout(canvas);
 
@@ -66,7 +66,13 @@ function drawStageSelect(ctx, progress) {
     const cx = x + cellSize / 2;
     const cy = y + cellSize / 2;
 
-    if (progress.cleared.includes(stageNum)) {
+    if (!isStageInDifficultyFilter(stageNum, difficultyFilter)) {
+      ctx.font = `${Math.floor(cellSize * 0.35)}px system-ui, sans-serif`;
+      ctx.fillStyle = '#444';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('·', cx, cy);
+    } else if (progress.cleared.includes(stageNum)) {
       ctx.font = `${Math.floor(cellSize * 0.45)}px "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
       ctx.fillStyle = '#fff';
       ctx.textAlign = 'center';
@@ -96,6 +102,7 @@ function registerStageSelectInput(canvas, getState, onSelect) {
     const point = getCanvasPoint(canvas, clientX, clientY);
     const stageNum = getStageAtPoint(canvas, point.x, point.y);
     if (!stageNum || !isStageUnlocked(state.progress, stageNum)) return;
+    if (!isStageInDifficultyFilter(stageNum, state.settings.difficultyFilter)) return;
     if (!(await stageExists(stageNum))) return;
 
     await onSelect(stageNum);

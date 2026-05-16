@@ -11,6 +11,8 @@ const state = {
   showStageSelect: false,
   screen: 'title',
   titleMenuIndex: 0,
+  settings: null,
+  settingsMenuIndex: 0,
 };
 
 let transitionTimer = null;
@@ -40,9 +42,11 @@ function applyStageToState(stage) {
 
 async function init() {
   state.progress = getProgress();
+  state.settings = getSettings();
   state.currentStage = state.progress.currentStage;
   state.screen = 'title';
   state.titleMenuIndex = 0;
+  state.settingsMenuIndex = 0;
 }
 
 async function startGame(fromContinue) {
@@ -86,6 +90,13 @@ function handleTitleConfirm() {
 
   if (choice === 'HELP') {
     state.screen = 'help';
+    render();
+    return;
+  }
+
+  if (choice === 'SETTINGS') {
+    state.screen = 'settings';
+    state.settingsMenuIndex = 0;
     render();
   }
 }
@@ -161,8 +172,13 @@ function render() {
     return;
   }
 
+  if (state.screen === 'settings') {
+    drawSettingsScreen(ctx, state.settings, state.settingsMenuIndex);
+    return;
+  }
+
   if (state.showStageSelect) {
-    drawStageSelect(ctx, state.progress);
+    drawStageSelect(ctx, state.progress, state.settings.difficultyFilter);
     return;
   }
 
@@ -187,6 +203,24 @@ window.addEventListener('load', async () => {
   await init();
   registerStageSelectInput(canvas, () => state, selectStage);
   registerHelpInput(() => state, goToTitle);
+  registerSettingsInput(() => state, {
+    onUp() {
+      state.settingsMenuIndex =
+        (state.settingsMenuIndex - 1 + SETTINGS_ROWS.length) %
+        SETTINGS_ROWS.length;
+      render();
+    },
+    onDown() {
+      state.settingsMenuIndex =
+        (state.settingsMenuIndex + 1) % SETTINGS_ROWS.length;
+      render();
+    },
+    onToggle() {
+      toggleSettingsValue(state.settings, state.settingsMenuIndex);
+      render();
+    },
+    onBack: goToTitle,
+  });
   registerTitleInput(() => state, {
     onUp() {
       state.titleMenuIndex =
