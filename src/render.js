@@ -37,3 +37,25 @@ function drawEmoji(ctx, emoji, x, y, size = 40) {
   ctx.textBaseline = 'middle';
   ctx.fillText(emoji, x + CELL_SIZE / 2, y + CELL_SIZE / 2);
 }
+
+function renderStage(ctx, stage) {
+  const rows = stage.length;
+  const cols = stage[0]?.length ?? 0;
+  const { originX, originY } = getStageOrigin(ctx.canvas, cols, rows);
+
+  drawGrid(ctx, cols, rows);
+
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      const emoji = EMOJI_MAP[stage[y][x].type];
+      if (emoji) {
+        drawEmoji(
+          ctx,
+          emoji,
+          originX + x * CELL_SIZE,
+          originY + y * CELL_SIZE
+        );
+      }
+    }
+  }
+}

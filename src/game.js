@@ -7,16 +7,24 @@ const state = {
   history: [],
 };
 
+const STAGE_01 = `#####
+#@$.#
+#...#
+#..*#
+#####`;
+
 function init() {
-  state.stage = {
-    id: 1,
-    name: 'Stage 1 (dummy)',
-    width: 10,
-    height: 8,
-    tiles: [],
-  };
-  state.player = { x: 1, y: 1 };
+  state.stage = parseStage(STAGE_01);
+  state.player = { x: 0, y: 0 };
   state.history = [];
+
+  for (const row of state.stage) {
+    for (const cell of row) {
+      if (cell.type === 'PLAYER' || cell.type === 'PLAYER_ON_GOAL') {
+        state.player = { x: cell.x, y: cell.y };
+      }
+    }
+  }
 }
 
 function render() {
@@ -24,15 +32,8 @@ function render() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   if (state.stage) {
-    drawGrid(ctx, state.stage.width, state.stage.height);
+    renderStage(ctx, state.stage);
   }
-
-  drawEmoji(
-    ctx,
-    '🧑',
-    canvas.width / 2 - CELL_SIZE / 2,
-    canvas.height / 2 - CELL_SIZE / 2
-  );
 }
 
 function gameLoop() {
