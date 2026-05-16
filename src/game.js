@@ -7,14 +7,8 @@ const state = {
   history: [],
 };
 
-const STAGE_01 = `#####
-#@$.#
-#...#
-#..*#
-#####`;
-
-function init() {
-  state.stage = parseStage(STAGE_01);
+async function init() {
+  state.stage = await loadStage(1);
   state.player = { x: 0, y: 0 };
   state.history = [];
 
@@ -41,7 +35,7 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-window.addEventListener('load', () => {
-  init();
+window.addEventListener('load', async () => {
+  await init();
   gameLoop();
 });
