@@ -41,7 +41,8 @@ function drawTitleScreen(ctx, selectedIndex) {
 
 function registerTitleInput(getState, callbacks) {
   window.addEventListener('keydown', (event) => {
-    if (getState().screen !== 'title') return;
+    const screen = getState().screen;
+    if (screen !== 'title') return;
 
     if (event.key === 'ArrowUp' || event.key === 'w' || event.key === 'W') {
       event.preventDefault();

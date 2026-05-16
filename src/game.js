@@ -81,7 +81,22 @@ function handleTitleConfirm() {
     state.stage = null;
     cancelStageTransition();
     render();
+    return;
   }
+
+  if (choice === 'HELP') {
+    state.screen = 'help';
+    render();
+  }
+}
+
+function goToTitle() {
+  state.screen = 'title';
+  state.showStageSelect = false;
+  state.cleared = false;
+  state.clearEffect = null;
+  cancelStageTransition();
+  render();
 }
 
 async function goToNextStage() {
@@ -141,6 +156,11 @@ function render() {
     return;
   }
 
+  if (state.screen === 'help') {
+    drawHelpScreen(ctx);
+    return;
+  }
+
   if (state.showStageSelect) {
     drawStageSelect(ctx, state.progress);
     return;
@@ -166,6 +186,7 @@ function gameLoop() {
 window.addEventListener('load', async () => {
   await init();
   registerStageSelectInput(canvas, () => state, selectStage);
+  registerHelpInput(() => state, goToTitle);
   registerTitleInput(() => state, {
     onUp() {
       state.titleMenuIndex =
@@ -203,5 +224,12 @@ window.addEventListener('load', async () => {
       toggleStageSelect();
     }
   );
+  window.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (state.screen === 'game') {
+      event.preventDefault();
+      goToTitle();
+    }
+  });
   gameLoop();
 });
