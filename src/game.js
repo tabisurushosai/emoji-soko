@@ -7,6 +7,7 @@ const state = {
   history: [],
   cleared: false,
   currentStage: 1,
+  progress: null,
 };
 
 function applyStageToState(stage) {
@@ -25,7 +26,8 @@ function applyStageToState(stage) {
 }
 
 async function init() {
-  state.currentStage = 1;
+  state.progress = getProgress();
+  state.currentStage = state.progress.currentStage;
   applyStageToState(await loadStage(state.currentStage));
 }
 
@@ -65,6 +67,10 @@ window.addEventListener('load', async () => {
       if (tryMove(state, dir)) {
         if (checkClear(state)) {
           state.cleared = true;
+          if (!state.progress.cleared.includes(state.currentStage)) {
+            state.progress.cleared.push(state.currentStage);
+          }
+          saveProgress(state.progress);
         }
         render();
       }
