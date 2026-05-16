@@ -3,6 +3,8 @@ const PLAYER_ANIM_DURATION = 150;
 const BOX_SHAKE_DURATION = 200;
 const BOX_SHAKE_AMOUNT = 3;
 const GOAL_STAR_DURATION = 800;
+const CLEAR_FLASH_DURATION = 300;
+const CLEAR_TEXT_DROP_DURATION = 500;
 
 const SHAKE_DIR_DELTA = {
   up: { x: 0, y: -1 },
@@ -128,10 +130,19 @@ function createClearParticles(canvas, count) {
   }));
 }
 
+function getClearTextY(canvas, elapsed) {
+  const targetY = canvas.height / 2;
+  const startY = -48;
+  const dropT = Math.min(elapsed / CLEAR_TEXT_DROP_DURATION, 1);
+  const eased = easeOutQuad(dropT);
+  return startY + (targetY - startY) * eased;
+}
+
 function drawClearEffect(ctx, clearEffect) {
   const canvas = ctx.canvas;
   const progress = getClearEffectProgress(clearEffect);
   const fade = progress * progress;
+  const elapsed = performance.now() - clearEffect.startTime;
 
   if (!clearEffect.particles) {
     clearEffect.particles = createClearParticles(canvas, 28);
@@ -140,7 +151,13 @@ function drawClearEffect(ctx, clearEffect) {
   ctx.fillStyle = `rgba(0, 0, 0, ${0.55 * fade})`;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const elapsed = performance.now() - clearEffect.startTime;
+  const flashT = Math.min(elapsed / CLEAR_FLASH_DURATION, 1);
+  const flashAlpha = (1 - flashT) * 0.32;
+  if (flashAlpha > 0) {
+    ctx.fillStyle = `rgba(255, 215, 0, ${flashAlpha})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
   for (const p of clearEffect.particles) {
     const x = p.x + p.vx * elapsed * 0.06;
     const y = p.y + p.vy * elapsed * 0.06 + Math.sin(elapsed * 0.004 + p.phase) * 8;
@@ -153,24 +170,27 @@ function drawClearEffect(ctx, clearEffect) {
     ctx.fillText('⭐', x, y);
   }
 
+  const textY = getClearTextY(canvas, elapsed);
+  const centerX = canvas.width / 2;
+
   ctx.globalAlpha = fade;
   ctx.fillStyle = '#fff';
   ctx.font = 'bold 52px system-ui, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('STAGE CLEAR', canvas.width / 2, canvas.height / 2);
+  ctx.fillText('STAGE CLEAR', centerX, textY);
 
   if (clearEffect.isNewBest) {
     ctx.globalAlpha = fade;
     ctx.fillStyle = '#ffd700';
     ctx.font = 'bold 28px system-ui, sans-serif';
-    ctx.fillText('NEW BEST!', canvas.width / 2, canvas.height / 2 + 44);
+    ctx.fillText('NEW BEST!', centerX, textY + 44);
   }
 
   ctx.globalAlpha = fade * 0.85;
   ctx.fillStyle = '#fff';
   ctx.font = '22px system-ui, sans-serif';
-  ctx.fillText('🎉', canvas.width / 2, canvas.height / 2 + (clearEffect.isNewBest ? 78 : 52));
+  ctx.fillText('🎉', centerX, textY + (clearEffect.isNewBest ? 78 : 52));
 
   ctx.globalAlpha = 1;
 }
