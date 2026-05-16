@@ -2,6 +2,7 @@ const CELL_SIZE = 48;
 const PLAYER_ANIM_DURATION = 150;
 const BOX_SHAKE_DURATION = 200;
 const BOX_SHAKE_AMOUNT = 3;
+const GOAL_STAR_DURATION = 800;
 
 const SHAKE_DIR_DELTA = {
   up: { x: 0, y: -1 },
@@ -170,6 +171,63 @@ function drawClearEffect(ctx, clearEffect) {
   ctx.fillStyle = '#fff';
   ctx.font = '22px system-ui, sans-serif';
   ctx.fillText('🎉', canvas.width / 2, canvas.height / 2 + (clearEffect.isNewBest ? 78 : 52));
+
+  ctx.globalAlpha = 1;
+}
+
+function createGoalStarEffect(gridX, gridY, cols, rows, canvas) {
+  const { originX, originY } = getStageOrigin(canvas, cols, rows);
+  const cx = originX + gridX * CELL_SIZE + CELL_SIZE / 2;
+  const cy = originY + gridY * CELL_SIZE + CELL_SIZE / 2;
+
+  const particles = Array.from({ length: 3 }, (_, i) => {
+    const angle = (Math.PI * 2 * i) / 3 - Math.PI / 2 + (Math.random() - 0.5) * 0.5;
+    const speed = 0.7 + Math.random() * 0.6;
+    return {
+      x: cx + (Math.random() - 0.5) * 10,
+      y: cy + (Math.random() - 0.5) * 10,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 1.4,
+      size: 14 + Math.random() * 10,
+      phase: Math.random() * Math.PI * 2,
+    };
+  });
+
+  return {
+    startTime: performance.now(),
+    duration: GOAL_STAR_DURATION,
+    particles,
+  };
+}
+
+function isGoalStarEffectActive(effect) {
+  return performance.now() - effect.startTime < effect.duration;
+}
+
+function drawGoalStarEffects(ctx, effects) {
+  const elapsedBase = performance.now();
+
+  for (const effect of effects) {
+    const elapsed = elapsedBase - effect.startTime;
+    const alpha = 1 - Math.min(elapsed / effect.duration, 1);
+
+    for (const p of effect.particles) {
+      const x =
+        p.x +
+        p.vx * elapsed * 0.05 +
+        Math.sin(elapsed * 0.005 + p.phase) * 5;
+      const y =
+        p.y +
+        p.vy * elapsed * 0.05 +
+        Math.sin(elapsed * 0.004 + p.phase) * 3;
+
+      ctx.globalAlpha = alpha;
+      ctx.font = `${p.size}px "Apple Color Emoji", "Segoe UI Emoji"`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', x, y);
+    }
+  }
 
   ctx.globalAlpha = 1;
 }

@@ -16,6 +16,7 @@ const state = {
   moves: 0,
   playerAnim: null,
   boxShake: null,
+  goalStarEffects: [],
 };
 
 let transitionTimer = null;
@@ -36,6 +37,7 @@ function applyStageToState(stage) {
   state.moves = 0;
   state.playerAnim = null;
   state.boxShake = null;
+  state.goalStarEffects = [];
 
   for (const row of state.stage) {
     for (const cell of row) {
@@ -213,7 +215,9 @@ function render() {
     if (state.boxShake && !isBoxShaking(state.boxShake)) {
       state.boxShake = null;
     }
+    state.goalStarEffects = state.goalStarEffects.filter(isGoalStarEffectActive);
     renderStage(ctx, state.stage, state.player, state.playerAnim, state.boxShake);
+    drawGoalStarEffects(ctx, state.goalStarEffects);
     drawMoveHud(ctx, state.currentStage, state.moves, state.progress.bestMoves);
   }
 
@@ -283,11 +287,20 @@ window.addEventListener('load', async () => {
         );
         if (result === 'push') {
           const delta = DIR_DELTA[dir];
-          state.boxShake = createBoxShake(
-            state.player.x + delta.x,
-            state.player.y + delta.y,
-            dir
-          );
+          const boxX = state.player.x + delta.x;
+          const boxY = state.player.y + delta.y;
+          state.boxShake = createBoxShake(boxX, boxY, dir);
+          if (state.stage[boxY][boxX].type === 'BOX_ON_GOAL') {
+            state.goalStarEffects.push(
+              createGoalStarEffect(
+                boxX,
+                boxY,
+                state.stage[0].length,
+                state.stage.length,
+                canvas
+              )
+            );
+          }
         }
         state.moves++;
         if (checkClear(state)) {
@@ -301,6 +314,7 @@ window.addEventListener('load', async () => {
       if (undo(state)) {
         state.playerAnim = null;
         state.boxShake = null;
+        state.goalStarEffects = [];
         render();
         return true;
       }
