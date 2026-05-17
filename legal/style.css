@@ -1,0 +1,149 @@
+/* Legal pages — matches index.html (black bg, white text, system-ui) */
+
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: system-ui, -apple-system, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  line-height: 1.6;
+}
+
+.legal-doc {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+}
+
+.legal-nav {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.legal-nav a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.legal-nav a:hover {
+  color: #fff;
+}
+
+article h1 {
+  font-size: 1.75rem;
+  margin: 0 0 1rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+article h2 {
+  font-size: 1.35rem;
+  margin: 2rem 0 0.75rem;
+  color: #ffd700;
+}
+
+article h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+article h4 {
+  font-size: 1rem;
+  margin: 1.25rem 0 0.4rem;
+  color: #ccc;
+}
+
+article p {
+  margin: 0.6rem 0;
+  color: #ddd;
+}
+
+article ul {
+  margin: 0.5rem 0 1rem;
+  padding-left: 1.5rem;
+  color: #ddd;
+}
+
+article li {
+  margin: 0.35rem 0;
+}
+
+article hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 2rem 0;
+}
+
+article strong {
+  color: #fff;
+}
+
+article code {
+  background: #1a1a1a;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+article pre {
+  background: #111;
+  border: 1px solid #333;
+  padding: 16px;
+  overflow-x: auto;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+article pre code {
+  background: none;
+  padding: 0;
+}
+
+article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+article th,
+article td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+article th {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+article a {
+  color: #8cf;
+}
+
+article a:hover {
+  color: #adf;
+}
+
+.legal-footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid #333;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+.legal-footer a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.legal-footer a:hover {
+  color: #fff;
+}
+
+.legal-footer .current {
+  color: #fff;
+  font-weight: bold;
+}
