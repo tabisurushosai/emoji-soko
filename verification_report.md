@@ -1,55 +1,122 @@
-# Stage Verification Report (61-100)
+# Stage Verification Report (01-100)
 
-- Generated: 2026-05-17 23:02:15 JST
-- Tool: `scripts/verify_stages.py` (BFS, node cap 200000, timeout 30s)
-- Note: "unverified" はノード上限 / タイムアウト到達による打ち切り (解不能ではない)
+- Generated: 2026-05-18 01:35:22 JST
+- Tool: `scripts/verify_stages.py` (push-BFS, node cap 600000, timeout 60s/stage)
+- ✗ = unsolvable, timeout, node cap, or parse error
+
+## Results
 
 ```
-[ 61] unverified  nodes= 200000  t=  0.43s  node cap
-[ 62] unverified  nodes= 200000  t=  0.45s  node cap
-[ 63] unverified  nodes= 200000  t=  0.43s  node cap
-[ 64] unverified  nodes= 200000  t=  0.44s  node cap
-[ 65] unverified  nodes= 200000  t=  0.49s  node cap
-[ 66] unverified  nodes= 200000  t=  0.52s  node cap
-[ 67] unverified  nodes= 200000  t=  0.59s  node cap
-[ 68] unverified  nodes= 200000  t=  0.54s  node cap
-[ 69] unverified  nodes= 200000  t=  0.59s  node cap
-[ 70] unverified  nodes= 200000  t=  0.51s  node cap
-[ 71] unverified  nodes= 200000  t=  0.47s  node cap
-[ 72] unverified  nodes= 200000  t=  0.44s  node cap
-[ 73] unverified  nodes= 200000  t=  0.54s  node cap
-[ 74] unverified  nodes= 200000  t=  0.47s  node cap
-[ 75] unverified  nodes= 200000  t=  0.53s  node cap
-[ 76] unverified  nodes= 200000  t=  0.50s  node cap
-[ 77] unverified  nodes= 200000  t=  0.54s  node cap
-[ 78] unverified  nodes= 200000  t=  0.56s  node cap
-[ 79] unverified  nodes= 200000  t=  0.50s  node cap
-[ 80] unverified  nodes= 200000  t=  0.54s  node cap
-[ 81] unverified  nodes= 200000  t=  0.56s  node cap
-[ 82] unverified  nodes= 200000  t=  0.51s  node cap
-[ 83] unverified  nodes= 200000  t=  0.48s  node cap
-[ 84] unverified  nodes= 200000  t=  0.56s  node cap
-[ 85] unverified  nodes= 200000  t=  0.56s  node cap
-[ 86] unverified  nodes= 200000  t=  0.62s  node cap
-[ 87] unverified  nodes= 200000  t=  0.53s  node cap
-[ 88] unverified  nodes= 200000  t=  0.51s  node cap
-[ 89] unverified  nodes= 200000  t=  0.53s  node cap
-[ 90] unverified  nodes= 200000  t=  0.62s  node cap
-[ 91] unverified  nodes= 200000  t=  0.63s  node cap
-[ 92] unverified  nodes= 200000  t=  0.57s  node cap
-[ 93] unverified  nodes= 200000  t=  0.56s  node cap
-[ 94] unverified  nodes= 200000  t=  0.64s  node cap
-[ 95] unverified  nodes= 200000  t=  0.68s  node cap
-[ 96] unverified  nodes= 200000  t=  0.50s  node cap
-[ 97] unverified  nodes= 200000  t=  0.60s  node cap
-[ 98] unverified  nodes= 200000  t=  0.58s  node cap
-[ 99] unverified  nodes= 200000  t=  0.70s  node cap
-[100] unverified  nodes= 200000  t=  0.65s  node cap
+✓ STAGE_01 solved (steps=1)
+✓ STAGE_02 solved (steps=1)
+✓ STAGE_03 solved (steps=1)
+✓ STAGE_04 solved (steps=1)
+✓ STAGE_05 solved (steps=5)
+✓ STAGE_06 solved (steps=2)
+✓ STAGE_07 solved (steps=1)
+✓ STAGE_08 solved (steps=3)
+✓ STAGE_09 solved (steps=1)
+✓ STAGE_10 solved (steps=2)
+✓ STAGE_11 solved (steps=2)
+✓ STAGE_12 solved (steps=4)
+✓ STAGE_13 solved (steps=5)
+✓ STAGE_14 solved (steps=4)
+✓ STAGE_15 solved (steps=3)
+✓ STAGE_16 solved (steps=5)
+✓ STAGE_17 solved (steps=3)
+✓ STAGE_18 solved (steps=6)
+✓ STAGE_19 solved (steps=6)
+✓ STAGE_20 solved (steps=2)
+✓ STAGE_21 solved (steps=7)
+✓ STAGE_22 solved (steps=7)
+✓ STAGE_23 solved (steps=7)
+✓ STAGE_24 solved (steps=7)
+✓ STAGE_25 solved (steps=7)
+✓ STAGE_26 solved (steps=7)
+✓ STAGE_27 solved (steps=7)
+✓ STAGE_28 solved (steps=7)
+✓ STAGE_29 solved (steps=8)
+✓ STAGE_30 solved (steps=7)
+✓ STAGE_31 solved (steps=8)
+✓ STAGE_32 solved (steps=10)
+✓ STAGE_33 solved (steps=5)
+✓ STAGE_34 solved (steps=10)
+✓ STAGE_35 solved (steps=10)
+✓ STAGE_36 solved (steps=10)
+✓ STAGE_37 solved (steps=10)
+✓ STAGE_38 solved (steps=10)
+✓ STAGE_39 solved (steps=5)
+✓ STAGE_40 solved (steps=10)
+✓ STAGE_41 solved (steps=9)
+✓ STAGE_42 solved (steps=9)
+✓ STAGE_43 solved (steps=9)
+✓ STAGE_44 solved (steps=9)
+✓ STAGE_45 solved (steps=10)
+✓ STAGE_46 solved (steps=9)
+✓ STAGE_47 solved (steps=9)
+✓ STAGE_48 solved (steps=9)
+✓ STAGE_49 solved (steps=9)
+✓ STAGE_50 solved (steps=9)
+✓ STAGE_51 solved (steps=9)
+✓ STAGE_52 solved (steps=8)
+✓ STAGE_53 solved (steps=9)
+✓ STAGE_54 solved (steps=8)
+✓ STAGE_55 solved (steps=9)
+✓ STAGE_56 solved (steps=9)
+✓ STAGE_57 solved (steps=9)
+✓ STAGE_58 solved (steps=9)
+✓ STAGE_59 solved (steps=8)
+✓ STAGE_60 solved (steps=12)
+✓ STAGE_61 solved (steps=16)
+✓ STAGE_62 solved (steps=16)
+✓ STAGE_63 solved (steps=16)
+✓ STAGE_64 solved (steps=16)
+✓ STAGE_65 solved (steps=16)
+✓ STAGE_66 solved (steps=16)
+✓ STAGE_67 solved (steps=9)
+✓ STAGE_68 solved (steps=9)
+✓ STAGE_69 solved (steps=11)
+✓ STAGE_70 solved (steps=11)
+✓ STAGE_71 solved (steps=11)
+✓ STAGE_72 solved (steps=11)
+✓ STAGE_73 solved (steps=13)
+✓ STAGE_74 solved (steps=11)
+✓ STAGE_75 solved (steps=11)
+✓ STAGE_76 solved (steps=13)
+✓ STAGE_77 solved (steps=12)
+✓ STAGE_78 solved (steps=12)
+✓ STAGE_79 solved (steps=12)
+✓ STAGE_80 solved (steps=12)
+✓ STAGE_81 solved (steps=7)
+✓ STAGE_82 solved (steps=7)
+✓ STAGE_83 solved (steps=7)
+✓ STAGE_84 solved (steps=11)
+✓ STAGE_85 solved (steps=12)
+✓ STAGE_86 solved (steps=12)
+✓ STAGE_87 solved (steps=12)
+✓ STAGE_88 solved (steps=12)
+✓ STAGE_89 solved (steps=12)
+✓ STAGE_90 solved (steps=12)
+✓ STAGE_91 solved (steps=12)
+✓ STAGE_92 solved (steps=12)
+✓ STAGE_93 solved (steps=12)
+✓ STAGE_94 solved (steps=12)
+✓ STAGE_95 solved (steps=12)
+✓ STAGE_96 solved (steps=12)
+✓ STAGE_97 solved (steps=12)
+✓ STAGE_98 solved (steps=12)
+✓ STAGE_99 solved (steps=12)
+✓ STAGE_100 solved (steps=12)
 
-Total:      40
-Solvable:   0
-Unsolvable: 0
-Unverified: 40  (node cap or timeout)
-Errors:     0
-UNVERIFIED: 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100
+SUMMARY solved=100 failed=0 total=100
 ```
+
+## Summary
+
+| Metric | Count |
+|--------|------:|
+| Solved | 100 |
+| Failed | 0 |
+| Total  | 100 |
+
+All stages verified solvable within limits.
