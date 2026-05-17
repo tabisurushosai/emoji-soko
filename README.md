@@ -39,18 +39,13 @@ SNS 告知文は `SNS_ANNOUNCE.md` を参照してください。
    - Code
 
 5. 説明文は `STORE_DESCRIPTION.md` を参照
-6. 配布 ZIP を生成:
+6. **リリース（ZIP 生成 + butler push）**:
 
 ```bash
-bash scripts/build_zip.sh
+bash scripts/release_to_itch.sh
 ```
 
-7. butler でアップロード（社長がローカルターミナルで実行）:
-
-```bash
-BUTLER_API_KEY=$(python3 -c "import json; print(json.load(open('$HOME/.config/itch/butler_creds'))['key'])") \
-  ~/bin/butler push emoji-soko_store.zip tabisurushosai/emoji-soko-tabisurushosai:html
-```
+初回のみ `butler login` が必要。詳細は [`docs/release.md`](docs/release.md)。
 
 > itch.io でプロジェクトページ（slug: `emoji-soko-tabisurushosai`）を作成してから実行してください。
 
