@@ -56,8 +56,8 @@
 - [x] git commit + push (e7ce806)
 
 ## 060: リリース判定スクリプト
-- [ ] scripts/release_check.sh (8 項目チェック)
-- [ ] bash scripts/release_check.sh で ✓ Release ready 出る
-- [ ] git commit + push
+- [x] scripts/release_check.sh (8 項目チェック)
+- [x] bash scripts/release_check.sh で ✓ Release ready 出る
+- [x] git commit + push
 - [ ] 完了後: bash scripts/release_to_itch.sh で butler push (これは社長確認後)
 
