@@ -44,11 +44,11 @@
 - [x] git commit + push
 
 ## 058: legal/*.html 生成
-- [ ] scripts/md_to_html.py (Python 標準ライブラリのみ)
-- [ ] legal/*.html を 6ファイル生成 (PRIVACY/TERMS/LICENSES 日英)
-- [ ] legal/style.css
-- [ ] index.html フッターに legal/*.html リンク追加
-- [ ] git commit + push
+- [x] scripts/md_to_html.py (Python 標準ライブラリのみ — html, re, pathlib)
+- [x] legal/*.html を 3ファイル生成 (PRIVACY/TERMS/LICENSES、各ファイル内に日英セクションを併記)
+- [x] legal/style.css
+- [x] index.html フッターに legal/*.html リンク追加
+- [x] git commit + push (2e9ef1b)
 
 ## 059: OGP meta + Twitter Card
 - [ ] assets/ogp_1200x630.png
