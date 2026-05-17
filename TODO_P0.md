@@ -27,9 +27,9 @@
 - [x] git commit + push
 
 ## 055: 未解決ステージ修正
-- [ ] 054 で特定された未解決ステージを修正 (手動 or generate_hard.js で再生成)
-- [ ] verify_stages.sh 再実行で 100/100 解可能
-- [ ] git commit + push
+- [x] 054 で特定された未解決ステージを修正 (手動 or generate_hard.js で再生成)
+- [x] verify_stages.sh 再実行で 100/100 解可能
+- [x] git commit + push
 
 ## 056: butler push スクリプト整備
 - [ ] scripts/release_to_itch.sh 新規 (build_zip.sh → butler push)
