@@ -16,6 +16,16 @@
 
 SNS 告知文は `SNS_ANNOUNCE.md` を参照してください。
 
+## リリース前チェック
+
+butler push の前に、以下で 8 項目を一括確認:
+
+```bash
+bash scripts/release_check.sh
+```
+
+すべて OK なら `✓ Release ready` と表示されます。
+
 ## 公開手順
 
 ### itch.io プロジェクト作成
