@@ -14,6 +14,7 @@ zip -rq "$ZIP_NAME" \
   src/ \
   stages/ \
   assets/icon.png \
+  assets/ogp_1200x630.png \
   -x "*.DS_Store" "*/.git/*" "*.bak*" "*.md" "TODO.*" "node_modules/*" "scripts/*" "*.py" "assets/*.py"
 
 echo "Created: $ROOT/$ZIP_NAME"
