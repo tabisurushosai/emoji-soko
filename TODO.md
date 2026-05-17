@@ -1,52 +1,51 @@
 # TODO
 
-- [x] emoji-soko-001: git init + ディレクトリ構造
-- [x] emoji-soko-002: index.html + style.css 雛形
-- [x] emoji-soko-003: main.js 雛形 + エントリポイント
-- [x] emoji-soko-004: ゲームボード描画 (グリッド)
-- [x] emoji-soko-005: 絵文字タイル表示
-- [x] emoji-soko-006: プレイヤー (押し手) 表示
-- [x] emoji-soko-007: キーボード入力 (矢印キー)
-- [x] emoji-soko-008: タッチ / スワイプ入力
-- [x] emoji-soko-009: 移動ロジック (壁判定)
-- [x] emoji-soko-010: 押しロジック (箱を押す)
-- [x] emoji-soko-011: ゴール判定
-- [x] emoji-soko-012: ステージクリア処理
-- [x] emoji-soko-013: ステージデータ形式定義 (JSON)
-- [x] emoji-soko-014: ステージローダー
-- [x] emoji-soko-015: サンプルステージ 1 作成
-- [x] emoji-soko-016: リセット機能
-- [x] emoji-soko-017: アンドゥ機能
-- [x] emoji-soko-018: 手数カウンター
-- [x] emoji-soko-019: タイマー
-- [x] emoji-soko-020: ステージ選択画面
-- [x] emoji-soko-021: ステージ 1〜10 作成
-- [x] emoji-soko-022: ステージ 11〜20 作成
-- [x] emoji-soko-023: ステージ 21〜30 作成
-- [x] emoji-soko-024: ステージ 31〜40 作成
-- [x] emoji-soko-025: ステージ 41〜50 作成
-- [x] emoji-soko-026: ステージ 51〜60 作成
-- [x] emoji-soko-027: ステージ 61〜70 作成
-- [x] emoji-soko-028: ステージ 71〜80 作成
-- [x] emoji-soko-029: ステージ 81〜90 作成
-- [x] emoji-soko-030: ステージ 91〜100 作成
-- [x] emoji-soko-031: クリア済みステージ保存 (localStorage)
-- [x] emoji-soko-032: ベスト手数保存
-- [x] emoji-soko-033: サウンド効果 (移動・クリア)
-- [x] emoji-soko-034: BGM (任意)
-- [x] emoji-soko-035: タイトル画面
-- [x] emoji-soko-036: ポーズ / メニュー
-- [x] emoji-soko-037: ヘルプ / 操作説明
-- [x] emoji-soko-038: レスポンシブレイアウト
-- [x] emoji-soko-039: ダークモード対応
-- [x] emoji-soko-040: アニメーション (移動・クリア)
-- [x] emoji-soko-041: アクセシビリティ (ARIA)
-- [x] emoji-soko-042: PWA manifest
-- [x] emoji-soko-043: オフライン対応 (Service Worker)
-- [x] emoji-soko-044: legal/privacy.html
-- [x] emoji-soko-045: legal/terms.html
-- [x] emoji-soko-046: OGP / メタタグ
-- [x] emoji-soko-047: パフォーマンス最適化
-- [x] emoji-soko-048: クロスブラウザテスト
-- [x] emoji-soko-049: README 更新 (遊び方・デプロイ)
-- [x] emoji-soko-050: リリース準備 (dist ビルド・zip)
+## 凡例
+
+- 「実装済」「未実装 / 乖離」「将来」の3区分。
+- 番号は連番ではなく作業単位 ID。
+- 「未実装 / 乖離」は `HANDOFF_FOR_CLAUDE.md` セクション3「TODO.md と実装の乖離」を 061-068 にマッピングしたもの。
+- リリース完了タスク (051-060) は別ファイル `TODO_P0.md` 参照。
+
+## 実装済 (001-050)
+
+001-050 はコアゲーム / 音声・演出 / コンテンツ・リリース。詳細は `HANDOFF_FOR_CLAUDE.md` セクション2参照。
+
+- [x] 001-027: コアゲーム (グリッド・ステージローダー・入力・押し・ゴール・Undo/Reset・ステージ選択・100 ステージ・タイトル・クリア演出・ヘルプ・設定・手数/ベスト・プログレス)
+- [x] 028-035: 音声 (BGM/SE/ジングル/ボリューム) + アニメーション (歩行・箱押しシェイク・ゴール星・全画面クリア)
+- [x] 036-050: コンテンツ・リリース (エンディング / legal/*.md / アイコン / カバー / SS / ストア説明 / build_zip / CHECKLIST / GitHub / itch.io 手順 / SNS)
+
+注: 050 で TODO 全 [x] にしたが、当初文言の一部は未実装。実態は下の「未実装 / 乖離 (P1)」参照。
+
+## リリース完了タスク (051-060)
+
+`TODO_P0.md` に分離。git push、scripts/ 追加、TODO/CHECKLIST 再構成、ステージ自動検証、butler push スクリプト、itch.io 配置、legal HTML 化、OGP、リリース判定。
+
+## 未実装 / 乖離 (P1)
+
+`HANDOFF_FOR_CLAUDE.md` セクション3「TODO.md と実装の乖離」を 061-068 にマッピング。
+
+- [ ] 061: レスポンシブ Canvas (旧 038)
+  - 現状 800×600 固定、viewport スケール未対応。
+- [ ] 062: ゲーム中タッチ / スワイプ操作 (旧 008)
+  - 現状ゲーム中はキーボードのみ、モバイルプレイ不可。
+- [ ] 063: タイマー表示 (旧 019)
+  - state はあるが UI 未実装。
+- [ ] 064: ポーズ / メニュー (旧 036)
+  - タイトル/設定/ヘルプはあるがプレイ中ポーズなし。
+- [ ] 065: ダーク / ライト切替 (旧 039)
+  - 常時ダークのみ。
+- [ ] 066: ARIA / キーボードフォーカス (旧 041)
+  - Canvas のみ、スクリーンリーダー非対応。
+- [ ] 067: PWA manifest + Service Worker (旧 042 + 043)
+  - manifest.json なし、SW なし、オフライン未対応。
+- [ ] 068: パフォーマンス最適化 + クロスブラウザテスト (旧 047 + 048)
+  - 形式化された計測 / 自動テストなし。
+
+## 将来 (P2-P3)
+
+- ステージエディタ
+- リーダーボード (オンライン)
+- 多言語 (en/ja 切替)
+- GitHub Actions: zip ビルド + stage validate
+- ステージを JS にインライン化して file:// で完結

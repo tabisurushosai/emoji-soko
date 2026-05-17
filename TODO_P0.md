@@ -15,10 +15,10 @@
 - [x] git commit + push
 
 ## 053: TODO.md と CHECKLIST.md を実態に合わせて更新
-- [ ] TODO.md を「実装済」「未実装」「将来 (P1-P3)」に再構成
-- [ ] CHECKLIST.md を「P0 必須」「P1-P3 任意」に再構成
-- [ ] 既知乖離項目を 062/063/064/061/065/066/067/068 にマッピング
-- [ ] git commit + push
+- [x] TODO.md を「実装済」「未実装」「将来 (P1-P3)」に再構成
+- [x] CHECKLIST.md を「P0 必須」「P1-P3 任意」に再構成
+- [x] 既知乖離項目を 062/063/064/061/065/066/067/068 にマッピング
+- [x] git commit + push
 
 ## 054: ステージ 61-100 solvability 自動検証
 - [ ] scripts/verify_stages.py を新規作成 (BFS、ノード上限 200K、timeout 30s)
