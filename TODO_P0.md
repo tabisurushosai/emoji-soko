@@ -32,10 +32,10 @@
 - [x] git commit + push
 
 ## 056: butler push スクリプト整備
-- [ ] scripts/release_to_itch.sh 新規 (build_zip.sh → butler push)
-- [ ] chmod +x
-- [ ] docs/release.md 新規 (butler install / login 手順)
-- [ ] git commit + push
+- [x] scripts/release_to_itch.sh 新規 (build_zip.sh → butler push)
+- [x] chmod +x
+- [x] docs/release.md 新規 (butler install / login 手順)
+- [x] git commit + push
 
 ## 057: itch.io 用 cover/screenshots 配置
 - [ ] assets/store/cover_630x500.png (sips でリサイズ)
