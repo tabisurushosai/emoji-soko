@@ -38,10 +38,10 @@
 - [x] git commit + push
 
 ## 057: itch.io 用 cover/screenshots 配置
-- [ ] assets/store/cover_630x500.png (sips でリサイズ)
-- [ ] assets/store/screenshots/*.png (1280x720、3-5枚)
-- [ ] assets/store/README.md
-- [ ] git commit + push
+- [x] assets/store/cover_630x500.png (sips でリサイズ)
+- [x] assets/store/screenshots/*.png (1280x720、3-5枚)
+- [x] assets/store/README.md
+- [x] git commit + push
 
 ## 058: legal/*.html 生成
 - [ ] scripts/md_to_html.py (Python 標準ライブラリのみ)
