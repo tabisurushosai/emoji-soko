@@ -51,9 +51,9 @@
 - [x] git commit + push (2e9ef1b)
 
 ## 059: OGP meta + Twitter Card
-- [ ] assets/ogp_1200x630.png
-- [ ] index.html <head> に og: / twitter: meta 追加
-- [ ] git commit + push
+- [x] assets/ogp_1200x630.png
+- [x] index.html <head> に og: / twitter: meta 追加
+- [x] git commit + push (e7ce806)
 
 ## 060: リリース判定スクリプト
 - [ ] scripts/release_check.sh (8 項目チェック)
