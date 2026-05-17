@@ -9,10 +9,10 @@
 - [x] 完了
 
 ## 052: 未追跡 scripts/ を git に追加
-- [ ] scripts/stage_tools.js と scripts/generate_hard.js を git に追加
-- [ ] 冒頭にコメント追加 (Development-only)
-- [ ] scripts/README.md を新規作成
-- [ ] git commit + push
+- [x] scripts/stage_tools.js と scripts/generate_hard.js を git に追加
+- [x] 冒頭にコメント追加 (Development-only)
+- [x] scripts/README.md を新規作成
+- [x] git commit + push
 
 ## 053: TODO.md と CHECKLIST.md を実態に合わせて更新
 - [ ] TODO.md を「実装済」「未実装」「将来 (P1-P3)」に再構成
