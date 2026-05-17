@@ -21,10 +21,10 @@
 - [x] git commit + push
 
 ## 054: ステージ 61-100 solvability 自動検証
-- [ ] scripts/verify_stages.py を新規作成 (BFS、ノード上限 200K、timeout 30s)
-- [ ] scripts/verify_stages.sh で実行 → verification_report.md 生成
-- [ ] 未解決ステージのリスト抽出
-- [ ] git commit + push
+- [x] scripts/verify_stages.py を新規作成 (BFS、ノード上限 200K、timeout 30s)
+- [x] scripts/verify_stages.sh で実行 → verification_report.md 生成
+- [x] 未解決ステージのリスト抽出 (61-100 全 40 件が node cap 到達で unverified → 055 へ)
+- [x] git commit + push
 
 ## 055: 未解決ステージ修正
 - [ ] 054 で特定された未解決ステージを修正 (手動 or generate_hard.js で再生成)
