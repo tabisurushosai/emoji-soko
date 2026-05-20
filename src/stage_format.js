@@ -25,10 +25,16 @@ const CHAR_TO_TYPE = Object.fromEntries(
 function parseStage(text) {
   const lines = text.trim().split('\n');
   return lines.map((line, y) =>
-    [...line].map((ch, x) => ({
-      type: CHAR_TO_TYPE[ch] ?? 'UNKNOWN',
-      x,
-      y,
-    }))
+    [...line].map((ch, x) => {
+      // 半角空白は FLOOR として扱う (Sokoban 伝統記法との互換、UNKNOWN化を防ぐ)
+      if (ch === ' ') {
+        return { type: 'FLOOR', x, y };
+      }
+      return {
+        type: CHAR_TO_TYPE[ch] ?? 'UNKNOWN',
+        x,
+        y,
+      };
+    })
   );
 }
