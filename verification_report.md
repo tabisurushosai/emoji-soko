@@ -1,6 +1,6 @@
 # Stage Verification Report (01-100)
 
-- Generated: 2026-05-18 01:35:22 JST
+- Generated: 2026-05-20 00:10:11 JST
 - Tool: `scripts/verify_stages.py` (push-BFS, node cap 600000, timeout 60s/stage)
 - ✗ = unsolvable, timeout, node cap, or parse error
 
